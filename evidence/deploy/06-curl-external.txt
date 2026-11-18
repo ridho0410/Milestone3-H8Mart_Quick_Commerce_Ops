@@ -1,0 +1,11 @@
+Curl dijalankan di laptop Windows, di luar jaringan VPS. Header rahasia disalurkan melalui stdin dan tidak dicatat.
+
+event-order-created-ok.json
+
+{"status":"diterima","order_id":"HM-TEST-001","duplicate":true,"stock_status":"cukup","warning":null}
+HTTP200
+
+event-order-created-stok-habis.json
+
+{"status":"ditolak","alasan":"stok_habis","order_id":"HM-TEST-002"}
+HTTP409

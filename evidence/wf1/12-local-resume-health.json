@@ -1,0 +1,32 @@
+{
+  "checked_on": "2026-11-10",
+  "scope": "Stack lokal dipulihkan setelah lima container ditemukan stopped; volume tetap digunakan",
+  "healthz_http": 200,
+  "execution_id": "80",
+  "status": "success",
+  "sync_run": {
+    "run_id": "10",
+    "run_at": "2026-11-10T10:28:36.985Z",
+    "merchants_total": 12,
+    "merchants_ok": 11,
+    "rows_synced": 188,
+    "new_stockouts": 0,
+    "duration_ms": 8897
+  },
+  "stock_count": 205,
+  "stock_calls_since_mock_restart": {
+    "M001": 1,
+    "M002": 1,
+    "M003": 1,
+    "M004": 2,
+    "M005": 1,
+    "M006": 1,
+    "M007": 1,
+    "M008": 1,
+    "M009": 3,
+    "M010": 1,
+    "M011": 1,
+    "M012": 1
+  },
+  "explanation": "M009 selalu HTTP 500 sesuai server.js; tiga percobaan lalu dead-letter, 11 merchant lain tetap diproses. M004 gagal sekali lalu berhasil pada percobaan kedua."
+}

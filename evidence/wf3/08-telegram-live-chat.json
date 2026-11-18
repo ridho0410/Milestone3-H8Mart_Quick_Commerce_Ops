@@ -1,0 +1,18 @@
+{
+  "scope": "Percakapan nyata melalui akun Ops terdaftar; pertanyaan dikirim agent lewat UI Telegram pada 9 November 2026.",
+  "telegram_execution_id": "26",
+  "wf3_execution_id": "27",
+  "mcp_execution_id": "28",
+  "merchant_id": "M003",
+  "question": "Berapa total pesanan merchant saya kemarin?",
+  "reply": "Total pesanan merchant Anda pada 2026-11-08 adalah 15.",
+  "independent_sql_count": 15,
+  "telegram_send_ok": true,
+  "nodes": [
+    "Telegram Trigger Merchant",
+    "Cek Allowlist Chat",
+    "Chat Terdaftar?",
+    "Tanya WF3 melalui Webhook",
+    "Balas Chat Merchant"
+  ]
+}

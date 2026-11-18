@@ -1,0 +1,242 @@
+{
+  "scope": "Jejak eksekusi n8n lokal memakai provider live; bukan jaminan akurasi produksi",
+  "cases": [
+    {
+      "id": "D01",
+      "execution_id": "27",
+      "merchant_id": "M003",
+      "nodes": [
+        "Terima Pertanyaan Merchant",
+        "Validasi Pertanyaan",
+        "Pertanyaan Valid?",
+        "Ambil Hari Data dan Merchant",
+        "Batasi Scope dan Kemampuan",
+        "Boleh Dijawab dari Data?",
+        "OpenAI gpt-6-luna",
+        "MCP Client Tool Merchant",
+        "Parser Output Terstruktur",
+        "Asisten Merchant AI",
+        "Validasi Output dan Guardrail",
+        "Lolos Guardrail?",
+        "Balas Dijawab"
+      ],
+      "tools": [
+        "MCP_Client_Tool_Merchant_KPI_Merchant",
+        "MCP_Client_Tool_Merchant_Alasan_Batal"
+      ],
+      "input_tokens": 1675,
+      "output_tokens": 0
+    },
+    {
+      "id": "D02",
+      "execution_id": "30",
+      "merchant_id": "M003",
+      "nodes": [
+        "Terima Pertanyaan Merchant",
+        "Validasi Pertanyaan",
+        "Pertanyaan Valid?",
+        "Ambil Hari Data dan Merchant",
+        "Batasi Scope dan Kemampuan",
+        "Boleh Dijawab dari Data?",
+        "OpenAI gpt-6-luna",
+        "MCP Client Tool Merchant",
+        "Parser Output Terstruktur",
+        "Asisten Merchant AI",
+        "Validasi Output dan Guardrail",
+        "Lolos Guardrail?",
+        "Balas Dijawab"
+      ],
+      "tools": [
+        "MCP_Client_Tool_Merchant_KPI_Merchant"
+      ],
+      "input_tokens": 1221,
+      "output_tokens": 0
+    },
+    {
+      "id": "D03",
+      "execution_id": "32",
+      "merchant_id": "M002",
+      "nodes": [
+        "Terima Pertanyaan Merchant",
+        "Validasi Pertanyaan",
+        "Pertanyaan Valid?",
+        "Ambil Hari Data dan Merchant",
+        "Batasi Scope dan Kemampuan",
+        "Boleh Dijawab dari Data?",
+        "OpenAI gpt-6-luna",
+        "MCP Client Tool Merchant",
+        "Parser Output Terstruktur",
+        "Asisten Merchant AI",
+        "Validasi Output dan Guardrail",
+        "Lolos Guardrail?",
+        "Balas Dijawab"
+      ],
+      "tools": [
+        "MCP_Client_Tool_Merchant_KPI_Merchant"
+      ],
+      "input_tokens": 1212,
+      "output_tokens": 0
+    },
+    {
+      "id": "D04",
+      "execution_id": "34",
+      "merchant_id": "M012",
+      "nodes": [
+        "Terima Pertanyaan Merchant",
+        "Validasi Pertanyaan",
+        "Pertanyaan Valid?",
+        "Ambil Hari Data dan Merchant",
+        "Batasi Scope dan Kemampuan",
+        "Boleh Dijawab dari Data?",
+        "OpenAI gpt-6-luna",
+        "MCP Client Tool Merchant",
+        "Parser Output Terstruktur",
+        "Asisten Merchant AI",
+        "Validasi Output dan Guardrail",
+        "Lolos Guardrail?",
+        "Balas Dijawab"
+      ],
+      "tools": [
+        "MCP_Client_Tool_Merchant_KPI_Merchant"
+      ],
+      "input_tokens": 1222,
+      "output_tokens": 0
+    },
+    {
+      "id": "D05",
+      "execution_id": "48",
+      "merchant_id": "M003",
+      "nodes": [
+        "Terima Pertanyaan Merchant",
+        "Validasi Pertanyaan",
+        "Pertanyaan Valid?",
+        "Ambil Hari Data dan Merchant",
+        "Batasi Scope dan Kemampuan",
+        "Boleh Dijawab dari Data?",
+        "OpenAI gpt-6-luna",
+        "MCP Client Tool Merchant",
+        "Parser Output Terstruktur",
+        "Asisten Merchant AI",
+        "Validasi Output dan Guardrail",
+        "Lolos Guardrail?",
+        "Balas Dijawab"
+      ],
+      "tools": [
+        "MCP_Client_Tool_Merchant_Status_Stok"
+      ],
+      "input_tokens": 2173,
+      "output_tokens": 0
+    },
+    {
+      "id": "D06",
+      "execution_id": "38",
+      "merchant_id": "M007",
+      "nodes": [
+        "Terima Pertanyaan Merchant",
+        "Validasi Pertanyaan",
+        "Pertanyaan Valid?",
+        "Ambil Hari Data dan Merchant",
+        "Batasi Scope dan Kemampuan",
+        "Boleh Dijawab dari Data?",
+        "Eskalasi Batas Kemampuan",
+        "Buat Tiket CS",
+        "Balas Eskalasi CS"
+      ],
+      "tools": [],
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    {
+      "id": "D07",
+      "execution_id": "39",
+      "merchant_id": "M002",
+      "nodes": [
+        "Terima Pertanyaan Merchant",
+        "Validasi Pertanyaan",
+        "Pertanyaan Valid?",
+        "Ambil Hari Data dan Merchant",
+        "Batasi Scope dan Kemampuan",
+        "Boleh Dijawab dari Data?",
+        "Eskalasi Batas Kemampuan",
+        "Buat Tiket CS",
+        "Balas Eskalasi CS"
+      ],
+      "tools": [],
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    {
+      "id": "D08",
+      "execution_id": "40",
+      "merchant_id": "M012",
+      "nodes": [
+        "Terima Pertanyaan Merchant",
+        "Validasi Pertanyaan",
+        "Pertanyaan Valid?",
+        "Ambil Hari Data dan Merchant",
+        "Batasi Scope dan Kemampuan",
+        "Boleh Dijawab dari Data?",
+        "Eskalasi Batas Kemampuan",
+        "Buat Tiket CS",
+        "Balas Eskalasi CS"
+      ],
+      "tools": [],
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    {
+      "id": "D09",
+      "execution_id": "41",
+      "merchant_id": "M002",
+      "nodes": [
+        "Terima Pertanyaan Merchant",
+        "Validasi Pertanyaan",
+        "Pertanyaan Valid?",
+        "Ambil Hari Data dan Merchant",
+        "Batasi Scope dan Kemampuan",
+        "Boleh Dijawab dari Data?",
+        "Eskalasi Batas Kemampuan",
+        "Buat Tiket CS",
+        "Balas Eskalasi CS"
+      ],
+      "tools": [],
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    {
+      "id": "D10",
+      "execution_id": "42",
+      "merchant_id": "M003",
+      "nodes": [
+        "Terima Pertanyaan Merchant",
+        "Validasi Pertanyaan",
+        "Pertanyaan Valid?",
+        "Ambil Hari Data dan Merchant",
+        "Batasi Scope dan Kemampuan",
+        "Boleh Dijawab dari Data?",
+        "OpenAI gpt-6-luna",
+        "MCP Client Tool Merchant",
+        "Parser Output Terstruktur",
+        "Asisten Merchant AI",
+        "Validasi Output dan Guardrail",
+        "Lolos Guardrail?",
+        "Balas Dijawab"
+      ],
+      "tools": [
+        "MCP_Client_Tool_Merchant_Alasan_Batal"
+      ],
+      "input_tokens": 1537,
+      "output_tokens": 0
+    }
+  ],
+  "pricing_usd_per_1m": {
+    "input": 0.1,
+    "output": 0.5,
+    "source": "https://developers.openai.com/api/docs/models/gpt-6-luna",
+    "checked": "2026-11-09"
+  },
+  "token_measurement": "tokenUsageEstimate dari n8n; bukan usage billing provider. Nilai completionTokens=0 berarti output tidak tercatat, bukan output gratis.",
+  "input_token_estimate": 9040,
+  "estimated_usd_input_only_lower_bound": 0.000904,
+  "output_tokens_measured": false
+}

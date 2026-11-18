@@ -1,0 +1,12 @@
+{
+  "hari_data_terakhir": "2026-11-08",
+  "daily_kpi": {
+    "orders": 162,
+    "on_time": 111,
+    "sla_pct": 82.84,
+    "delivered": 134,
+    "cancel_rate_pct": 15.43,
+    "cancelled_failed": 25
+  },
+  "merchant_stock_rows": 205
+}

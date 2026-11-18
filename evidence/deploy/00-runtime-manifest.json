@@ -1,0 +1,273 @@
+{
+  "checked_on": "2026-11-10",
+  "scope": "VPS HTTPS; data sintetis dan tiga API tiruan",
+  "base": "https://h8mart-ridho.duckdns.org",
+  "workflows": [
+    {
+      "file": "wf1-stock-sync-order-intake.json",
+      "id": "8VgIttLLru8Y2EdS",
+      "name": "H8Mart WF1 - Stock Sync Order Digest",
+      "published": true,
+      "error_workflow_id": "hrWBprPIJJb1NBS9",
+      "schedules": [
+        {
+          "name": "Jadwal Sinkron 15 Menit",
+          "disabled": true,
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes",
+                "minutesInterval": 15
+              }
+            ]
+          }
+        },
+        {
+          "name": "Jadwal Digest 07 WIB",
+          "disabled": true,
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "0 7 * * *"
+              }
+            ]
+          }
+        }
+      ],
+      "recent_executions": [
+        {
+          "id": "36",
+          "mode": "manual",
+          "status": "success"
+        },
+        {
+          "id": "33",
+          "mode": "webhook",
+          "status": "success"
+        },
+        {
+          "id": "32",
+          "mode": "webhook",
+          "status": "success"
+        },
+        {
+          "id": "31",
+          "mode": "manual",
+          "status": "success"
+        },
+        {
+          "id": "8",
+          "mode": "webhook",
+          "status": "success"
+        },
+        {
+          "id": "7",
+          "mode": "webhook",
+          "status": "success"
+        },
+        {
+          "id": "6",
+          "mode": "webhook",
+          "status": "success"
+        },
+        {
+          "id": "5",
+          "mode": "webhook",
+          "status": "success"
+        }
+      ]
+    },
+    {
+      "file": "wf2-merchant-data-tools.json",
+      "id": "lgXIFn9uQlkqAR37",
+      "name": "H8Mart WF2 - Merchant Data Tools",
+      "published": true,
+      "error_workflow_id": "hrWBprPIJJb1NBS9",
+      "schedules": [],
+      "recent_executions": [
+        {
+          "id": "39",
+          "mode": "webhook",
+          "status": "success"
+        },
+        {
+          "id": "37",
+          "mode": "manual",
+          "status": "success"
+        },
+        {
+          "id": "28",
+          "mode": "webhook",
+          "status": "success"
+        },
+        {
+          "id": "10",
+          "mode": "webhook",
+          "status": "success"
+        },
+        {
+          "id": "3",
+          "mode": "webhook",
+          "status": "success"
+        }
+      ]
+    },
+    {
+      "file": "wf3-ai-merchant-assistant.json",
+      "id": "8Mnt5pcXhQa38KG7",
+      "name": "H8Mart WF3 - AI Merchant Assistant",
+      "published": true,
+      "error_workflow_id": "hrWBprPIJJb1NBS9",
+      "schedules": [],
+      "recent_executions": [
+        {
+          "id": "38",
+          "mode": "manual",
+          "status": "success"
+        },
+        {
+          "id": "27",
+          "mode": "webhook",
+          "status": "success"
+        },
+        {
+          "id": "11",
+          "mode": "webhook",
+          "status": "success"
+        },
+        {
+          "id": "9",
+          "mode": "webhook",
+          "status": "success"
+        }
+      ]
+    },
+    {
+      "file": "wf3b-telegram-merchant-chat.json",
+      "id": "MSFNbjwIXWmtNiNm",
+      "name": "H8Mart WF3b - Telegram Merchant Chat",
+      "published": true,
+      "error_workflow_id": "hrWBprPIJJb1NBS9",
+      "schedules": [],
+      "recent_executions": [
+        {
+          "id": "26",
+          "mode": "webhook",
+          "status": "success"
+        }
+      ]
+    },
+    {
+      "file": "wf4-compensation-refund.json",
+      "id": "I80PHBAG8qqMzubA",
+      "name": "H8Mart WF4 - Compensation Refund",
+      "published": true,
+      "error_workflow_id": "hrWBprPIJJb1NBS9",
+      "schedules": [],
+      "recent_executions": [
+        {
+          "id": "40",
+          "mode": "manual",
+          "status": "success"
+        },
+        {
+          "id": "30",
+          "mode": "webhook",
+          "status": "success"
+        },
+        {
+          "id": "29",
+          "mode": "webhook",
+          "status": "success"
+        },
+        {
+          "id": "25",
+          "mode": "webhook",
+          "status": "success"
+        },
+        {
+          "id": "22",
+          "mode": "webhook",
+          "status": "error"
+        },
+        {
+          "id": "21",
+          "mode": "webhook",
+          "status": "success"
+        },
+        {
+          "id": "20",
+          "mode": "retry",
+          "status": "error"
+        },
+        {
+          "id": "18",
+          "mode": "webhook",
+          "status": "error"
+        }
+      ]
+    },
+    {
+      "file": "wf5-reliability-monitoring.json",
+      "id": "hrWBprPIJJb1NBS9",
+      "name": "H8Mart WF5 - Reliability Alert",
+      "published": true,
+      "error_workflow_id": null,
+      "schedules": [],
+      "recent_executions": [
+        {
+          "id": "35",
+          "mode": "manual",
+          "status": "success"
+        },
+        {
+          "id": "24",
+          "mode": "error",
+          "status": "success"
+        },
+        {
+          "id": "23",
+          "mode": "error",
+          "status": "success"
+        },
+        {
+          "id": "19",
+          "mode": "error",
+          "status": "success"
+        }
+      ]
+    }
+  ],
+  "screenshots": {
+    "wf1-stock.jpg": "wf1/01a-canvas-sinkron-stok.jpg",
+    "wf1-order.jpg": "wf1/01b-canvas-order-intake.jpg",
+    "wf1-digest.jpg": "wf1/01c-canvas-digest-ops.jpg",
+    "wf1-02-executions.jpg": "wf1/02-executions.jpg",
+    "wf2-01-canvas.jpg": "wf2/01-canvas.jpg",
+    "wf2-02-executions.jpg": "wf2/02-executions.jpg",
+    "wf3-01-canvas.jpg": "wf3/01-canvas.jpg",
+    "wf3-02-executions.jpg": "wf3/02-executions.jpg",
+    "wf4-01-canvas.jpg": "wf4/01-canvas.jpg",
+    "wf4-02-executions.jpg": "wf4/02-executions.jpg",
+    "wf5-01-canvas.jpg": "wf5/01-canvas.jpg",
+    "wf5-02-executions.jpg": "wf5/02-executions.jpg",
+    "wf1-11-merge-output.jpg": "wf1/11-merge-output.jpg",
+    "wf3-07-telegram-executions.jpg": "wf3/07-telegram-workflow-executions.jpg",
+    "telegram-approval-pending.png": "wf4/06-telegram-approval-pending.png",
+    "telegram-approval-declined.png": "wf4/07-telegram-approval-declined.png",
+    "wf5-06-alert-output.jpg": "wf5/06-alert-output.jpg",
+    "kuma-up-down-vps.jpg": "wf5/07-kuma-up-down-vps.jpg",
+    "vps-https-browser-page.jpg": "deploy/01-vps-n8n-published.jpg",
+    "telegram-digest.png": "wf1/06-telegram-digest.png",
+    "telegram-chat-berhasil.png": "wf3/11-telegram-live-chat.png",
+    "telegram-approval-approved.png": "wf4/08-telegram-approval-approved.png"
+  },
+  "notes": {
+    "wf5_canvas": "Manual Error Trigger memakai contoh n8n; eksekusi Error Workflow produksi nyata terdapat pada ID 24 dan 23.",
+    "wf2_canvas": "Manual MCP Test URL ID37; pemanggilan produksi oleh agent terdapat pada ID28 (agent ID27).",
+    "telegram_guard": "Chat asing diuji terkontrol pada clone tanpa mengirim pesan ke akun lain.",
+    "schedules": "Kedua Schedule nonaktif sesudah sinkron/evidence; webhook tetap Published.",
+    "post_snapshot_smoke": "Rotasi token penilaian dan pengujian akhir terdapat pada 12-grading-access-smoke.json; tidak mengubah definisi workflow."
+  }
+}

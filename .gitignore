@@ -10,3 +10,4 @@ postgres_data/
 .DS_Store
 *.pem
 *.key
+project_import/

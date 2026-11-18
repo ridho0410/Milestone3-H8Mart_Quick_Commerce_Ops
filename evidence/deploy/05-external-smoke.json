@@ -1,0 +1,218 @@
+{
+  "scope": "VPS HTTPS publik; Stock/Payment/Notification tetap API tiruan sintetis",
+  "base": "https://h8mart-ridho.duckdns.org",
+  "checks": [
+    {
+      "trigger": "Manual Sinkron",
+      "execution_id": "1",
+      "status": "success",
+      "sync_run": {
+        "run_id": "1",
+        "run_at": "2026-11-09T11:41:32.994Z",
+        "merchants_total": 12,
+        "merchants_ok": 11,
+        "rows_synced": 188,
+        "new_stockouts": 2,
+        "duration_ms": 7816
+      }
+    },
+    {
+      "trigger": "Manual Digest",
+      "execution_id": "2",
+      "status": "success",
+      "telegram_message_id": 20
+    },
+    {
+      "case": "event-order-created-ok.json",
+      "http": 200,
+      "response": {
+        "status": "diterima",
+        "order_id": "HM-TEST-001",
+        "duplicate": false,
+        "stock_status": "cukup",
+        "warning": null
+      }
+    },
+    {
+      "case": "event-order-created-stok-habis.json",
+      "http": 409,
+      "response": {
+        "status": "ditolak",
+        "alasan": "stok_habis",
+        "order_id": "HM-TEST-002"
+      }
+    },
+    {
+      "case": "event-order-created-stok-menipis.json",
+      "http": 200,
+      "response": {
+        "status": "diterima",
+        "order_id": "HM-TEST-003",
+        "duplicate": false,
+        "stock_status": "tipis",
+        "warning": "Stok setelah permintaan menipis"
+      }
+    },
+    {
+      "case": "event-order-created-item-kosong.json",
+      "http": 422,
+      "response": {
+        "status": "ditolak",
+        "alasan": "event_atau_item_tidak_valid"
+      }
+    },
+    {
+      "case": "event-order-created-ok.json",
+      "http": 200,
+      "response": {
+        "status": "diterima",
+        "order_id": "HM-TEST-001",
+        "duplicate": true,
+        "stock_status": "cukup",
+        "warning": null
+      }
+    },
+    {
+      "case": "missing_header",
+      "http": 403
+    },
+    {
+      "case": "AI KPI melalui HTTPS",
+      "http": 200,
+      "response": {
+        "status": "dijawab",
+        "jawaban": "Pada 2026-11-08, total pesanan merchant Anda adalah 15, dengan tingkat pembatalan 60% (9 pesanan batal/gagal dari 15 pesanan).",
+        "data_dipakai": [
+          "core.orders",
+          "core.deliveries"
+        ],
+        "confidence": 0.99
+      }
+    },
+    {
+      "case": "AI blok lintas merchant dan perubahan harga",
+      "http": 200,
+      "response": {
+        "status": "eskalasi_cs",
+        "jawaban": "Pertanyaan diteruskan ke CS dengan tiket 1. Tim CS akan menindaklanjuti.",
+        "data_dipakai": [],
+        "confidence": 0,
+        "alasan": "Permintaan data merchant lain ditolak"
+      }
+    },
+    {
+      "case": "event-delivery-late-ringan.json",
+      "http": 200,
+      "response": {
+        "order_id": "HM-SP-001",
+        "amount": "10000",
+        "status": "issued",
+        "payment_ref": "VC-00001"
+      }
+    },
+    {
+      "case": "event-delivery-late-berat.json",
+      "http": 200,
+      "response": {
+        "order_id": "HM-SP-002",
+        "amount": "20000",
+        "status": "issued",
+        "payment_ref": "VC-00002"
+      }
+    },
+    {
+      "case": "event-delivery-late-berat.json",
+      "http": 200,
+      "response": {
+        "status": "issued",
+        "order_id": "HM-SP-002",
+        "duplicate": true
+      }
+    },
+    {
+      "case": "event-order-failed-kecil.json",
+      "http": 200,
+      "response": {
+        "order_id": "HM-SP-003",
+        "amount": "80000",
+        "status": "refunded",
+        "payment_ref": "RF-00001"
+      }
+    },
+    {
+      "case": "event-order-failed-kecil.json",
+      "http": 200,
+      "response": {
+        "status": "refunded",
+        "order_id": "HM-SP-003",
+        "duplicate": true
+      }
+    },
+    {
+      "case": "event-order-failed-belum-bayar.json",
+      "http": 200,
+      "response": {
+        "route": "skip",
+        "order_id": "HM-SP-007",
+        "status": "tidak_perlu_refund",
+        "reason": "pembayaran_belum_tertagih_atau_sudah_refund"
+      }
+    },
+    {
+      "case": "event-order-failed-besar.json",
+      "http": 202,
+      "response": {
+        "status": "pending_approval",
+        "order_id": "HM-SP-004",
+        "amount": 296000,
+        "approval_channel": "telegram",
+        "request_id": "18"
+      }
+    },
+    {
+      "case": "Approval awal execution 18",
+      "status": "error",
+      "reason": "Telegram Trigger versi 1.3 belum mendaftarkan callback_query; diperbaiki ke versi 1.5 sebelum percobaan ulang."
+    },
+    {
+      "case": "Telegram approval menunggu Ops",
+      "order_id": "HM-SP-004",
+      "execution_id": "20",
+      "status": "waiting"
+    },
+    {
+      "case": "event-order-failed-ditolak.json",
+      "http": 202,
+      "response": {
+        "status": "pending_approval",
+        "order_id": "HM-SP-005",
+        "amount": 224000,
+        "approval_channel": "telegram",
+        "request_id": "21"
+      }
+    },
+    {
+      "case": "Telegram approval menunggu Ops",
+      "order_id": "HM-SP-005",
+      "execution_id": "21",
+      "status": "waiting"
+    },
+    {
+      "case": "event-order-failed-payment-down.json",
+      "http": 202,
+      "response": {
+        "status": "pending_approval",
+        "order_id": "HM-SP-099",
+        "amount": 368000,
+        "approval_channel": "telegram",
+        "request_id": "22"
+      }
+    },
+    {
+      "case": "Telegram approval menunggu Ops",
+      "order_id": "HM-SP-099",
+      "execution_id": "22",
+      "status": "waiting"
+    }
+  ]
+}

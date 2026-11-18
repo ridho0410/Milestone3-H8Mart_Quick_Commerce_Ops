@@ -1,0 +1,21 @@
+{
+  "scope": "MCP test endpoint di jaringan Compose, UI manual listener; M003; read-only",
+  "params": {
+    "name": "KPI_Merchant",
+    "arguments": {
+      "tanggal": "2026-11-08"
+    }
+  },
+  "result": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "[{\"merchant_id\":\"M003\",\"tanggal\":\"2026-11-08\",\"jumlah_order\":15,\"terkirim\":6,\"batal_gagal\":9,\"cancel_rate_persen\":\"60.00\",\"tepat_waktu\":3,\"sla_30_menit_persen\":\"50.00\"}]"
+        }
+      ]
+    },
+    "jsonrpc": "2.0",
+    "id": 3
+  }
+}

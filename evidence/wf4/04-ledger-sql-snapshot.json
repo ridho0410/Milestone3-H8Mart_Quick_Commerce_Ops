@@ -1,0 +1,55 @@
+{
+  "refund_actions": [
+    {
+      "amount": 80000,
+      "status": "refunded",
+      "order_id": "HM-SP-003",
+      "approved_by": null,
+      "payment_ref": "RF-00001"
+    },
+    {
+      "amount": 296000,
+      "status": "refunded",
+      "order_id": "HM-SP-004",
+      "approved_by": "ops-local",
+      "payment_ref": "RF-00002"
+    },
+    {
+      "amount": 224000,
+      "status": "rejected",
+      "order_id": "HM-SP-005",
+      "approved_by": "ops-local",
+      "payment_ref": null
+    },
+    {
+      "amount": 80000,
+      "status": "refunded",
+      "order_id": "HM-SP-008",
+      "approved_by": null,
+      "payment_ref": "RF-00003"
+    },
+    {
+      "amount": 368000,
+      "status": "failed",
+      "order_id": "HM-SP-099",
+      "approved_by": "ops-local",
+      "payment_ref": null
+    }
+  ],
+  "compensations": [
+    {
+      "kind": "voucher",
+      "amount": 10000,
+      "status": "issued",
+      "order_id": "HM-SP-001",
+      "payment_ref": "VC-00001"
+    },
+    {
+      "kind": "voucher",
+      "amount": 20000,
+      "status": "issued",
+      "order_id": "HM-SP-002",
+      "payment_ref": "VC-00002"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "checked_on": "2026-11-10",
+  "protected_starter_files_unchanged": 45,
+  "public_files_checked": 121,
+  "json_files_parsed": 48,
+  "workflow_exports": 6,
+  "credential_ids": "placeholder",
+  "pin_data": "absent",
+  "env_tracked": false,
+  "secret_findings": 0,
+  "scope": "Pemindaian teks/JSON terhadap secret runtime yang diketahui dan pola key; screenshot diperiksa secara visual. Bukan audit keamanan produksi."
+}

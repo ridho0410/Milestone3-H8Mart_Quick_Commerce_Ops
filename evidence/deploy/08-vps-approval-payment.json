@@ -1,0 +1,125 @@
+{
+  "scope": "Payment tiruan; keputusan berasal dari callback akun Ops. HM-SP-004 link tanpa identitas ditolak; HM-SP-005 mendapat Approve; uji Decline tambahan HM-VPS-REJECT diklik agent di UI Telegram sesuai instruksi pengujian pengguna.",
+  "checks": [
+    {
+      "order_id": "HM-SP-004",
+      "execution_id": "20",
+      "status": "error",
+      "approved": true,
+      "ops_identity_present": false,
+      "last_node": "Gagal - Approval Tidak Valid"
+    },
+    {
+      "order_id": "HM-SP-005",
+      "execution_id": "21",
+      "status": "success",
+      "approved": true,
+      "ops_identity_present": true,
+      "last_node": "Refund Tanpa Wait?"
+    },
+    {
+      "order_id": "HM-SP-099",
+      "execution_id": "22",
+      "status": "error",
+      "approved": true,
+      "ops_identity_present": true,
+      "last_node": "Gagal - Payment Refund"
+    },
+    {
+      "order_id": "HM-VPS-REJECT",
+      "execution_id": "25",
+      "status": "success",
+      "approved": false,
+      "ops_identity_present": true,
+      "last_node": "Notifikasi Ditolak"
+    },
+    {
+      "case": "Payment gagal sekali lalu retry berhasil",
+      "order_id": "HM-SP-008",
+      "http": 200,
+      "response": {
+        "order_id": "HM-SP-008",
+        "amount": "80000",
+        "status": "refunded",
+        "payment_ref": "RF-00003"
+      }
+    },
+    {
+      "case": "Refund besar duplikat",
+      "http": 200,
+      "response": {
+        "status": "refunded",
+        "order_id": "HM-SP-005",
+        "duplicate": true
+      }
+    }
+  ],
+  "ledger": [
+    {
+      "order_id": "HM-SP-003",
+      "amount": 80000,
+      "status": "refunded",
+      "approved_by_ops": false
+    },
+    {
+      "order_id": "HM-SP-004",
+      "amount": 296000,
+      "status": "pending_approval",
+      "approved_by_ops": false
+    },
+    {
+      "order_id": "HM-SP-005",
+      "amount": 224000,
+      "status": "refunded",
+      "approved_by_ops": true
+    },
+    {
+      "order_id": "HM-SP-008",
+      "amount": 80000,
+      "status": "refunded",
+      "approved_by_ops": false
+    },
+    {
+      "order_id": "HM-SP-099",
+      "amount": 368000,
+      "status": "failed",
+      "approved_by_ops": true
+    },
+    {
+      "order_id": "HM-VPS-REJECT",
+      "amount": 224000,
+      "status": "rejected",
+      "approved_by_ops": true
+    }
+  ],
+  "gateway": {
+    "count": 3,
+    "calls": 9,
+    "refunds": [
+      {
+        "idempotency_key": "refund:HM-SP-003",
+        "refund_id": "RF-00001",
+        "order_id": "HM-SP-003",
+        "amount": 80000,
+        "status": "succeeded",
+        "replayed": false
+      },
+      {
+        "idempotency_key": "refund:HM-SP-005",
+        "refund_id": "RF-00002",
+        "order_id": "HM-SP-005",
+        "amount": 224000,
+        "status": "succeeded",
+        "replayed": false
+      },
+      {
+        "idempotency_key": "refund:HM-SP-008",
+        "refund_id": "RF-00003",
+        "order_id": "HM-SP-008",
+        "amount": 80000,
+        "status": "succeeded",
+        "replayed": false
+      }
+    ]
+  }
+}

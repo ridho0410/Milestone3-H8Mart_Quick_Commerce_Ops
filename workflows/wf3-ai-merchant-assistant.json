@@ -3,14 +3,6 @@
   "name": "H8Mart WF3 - AI Merchant Assistant",
   "nodes": [
     {
-      "id": "235ed19d-e6db-5255-bc9f-c757929e4626",
-      "name": "Terima Pertanyaan Merchant",
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2.1,
-      "position": [
-        0,
-        0
-      ],
       "parameters": {
         "httpMethod": "POST",
         "path": "h8mart-assistant",
@@ -18,40 +10,42 @@
         "responseMode": "responseNode",
         "options": {}
       },
+      "id": "235ed19d-e6db-5255-bc9f-c757929e4626",
+      "name": "Terima Pertanyaan Merchant",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        16,
+        288
+      ],
+      "webhookId": "h8mart-ridho-assistant",
       "credentials": {
         "httpHeaderAuth": {
           "id": "GANTI-ID-H8Mart-Webhook",
           "name": "H8Mart Webhook"
         }
-      },
-      "webhookId": "h8mart-ridho-assistant"
+      }
     },
     {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "payload = _items[0][\"json\"].get(\"body\")\nif payload in (None, False, 0, \"\"):\n    payload = {}\ndata = payload if isinstance(payload, dict) else {}\nmerchant = data.get(\"merchant_id\")\nquestion = data.get(\"question\")\nvalid = (isinstance(merchant, str) and len(merchant) == 4 and merchant[0] == \"M\"\n         and all(char in \"0123456789\" for char in merchant[1:])\n         and isinstance(question, str)\n         and bool(question.strip(\" \\t\\n\\r\\v\\f\\u00a0\\u1680\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufeff\"))\n         and sum(2 if ord(char) > 65535 else 1 for char in question) <= 2000)\nreturn [{\"json\": {\"valid\": valid, \"merchant_id\": \"\" if merchant in (None, False, 0, \"\") else merchant,\n                  \"question\": \"\" if question in (None, False, 0, \"\") else question}}]"
+      },
       "id": "0bb3e834-011b-59cd-9e29-519f04202af7",
       "name": "Validasi Pertanyaan",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        250,
-        0
-      ],
-      "parameters": {
-        "jsCode": "const p=$input.first().json.body||{};const valid=typeof p.merchant_id==='string'&&/^M\\d{3}$/.test(p.merchant_id)&&typeof p.question==='string'&&p.question.trim().length>0&&p.question.length<=2000;return [{json:{valid,merchant_id:p.merchant_id||'',question:p.question||''}}];"
-      }
+        240,
+        288
+      ]
     },
     {
-      "id": "86db8e86-364e-5ffe-82af-3ca9cca398a1",
-      "name": "Pertanyaan Valid?",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        500,
-        0
-      ],
       "parameters": {
         "conditions": {
           "options": {
             "caseSensitive": true,
+            "leftValue": "",
             "typeValidation": "strict",
             "version": 2
           },
@@ -70,34 +64,34 @@
           "combinator": "and"
         },
         "options": {}
-      }
+      },
+      "id": "86db8e86-364e-5ffe-82af-3ca9cca398a1",
+      "name": "Pertanyaan Valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        464,
+        288
+      ]
     },
     {
-      "id": "6a7d2eb4-7ce5-580b-987d-e22a219d54f1",
-      "name": "Respon 422 Pertanyaan",
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.4,
-      "position": [
-        750,
-        250
-      ],
       "parameters": {
         "respondWith": "json",
         "responseBody": "={{ {status:\"ditolak\",alasan:\"merchant_id_dan_question_wajib_valid\"} }}",
         "options": {
           "responseCode": 422
         }
-      }
+      },
+      "id": "6a7d2eb4-7ce5-580b-987d-e22a219d54f1",
+      "name": "Respon 422 Pertanyaan",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        688,
+        528
+      ]
     },
     {
-      "id": "1d2e5e6b-90d2-5b10-97df-c26a7286683e",
-      "name": "Ambil Hari Data dan Merchant",
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.7,
-      "position": [
-        750,
-        0
-      ],
       "parameters": {
         "operation": "executeQuery",
         "query": "SELECT $1::text merchant_id,$2::text question,(SELECT hari_data_terakhir::text FROM core.data_info) tanggal,EXISTS(SELECT 1 FROM core.merchants WHERE merchant_id=$1 AND active) merchant_active",
@@ -105,6 +99,14 @@
           "queryReplacement": "={{ [$json.merchant_id,$json.question] }}"
         }
       },
+      "id": "1d2e5e6b-90d2-5b10-97df-c26a7286683e",
+      "name": "Ambil Hari Data dan Merchant",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        688,
+        192
+      ],
       "credentials": {
         "postgres": {
           "id": "GANTI-ID-H8Mart-PG-Reader",
@@ -113,31 +115,25 @@
       }
     },
     {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "import re\ndata = _items[0][\"json\"]\nquestion = data[\"question\"]\nupper = question.upper()\nword_chars = \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\"\ndigits = \"0123456789\"\nmerchant_ids = []\nfor index in range(len(upper) - 3):\n    candidate = upper[index:index + 4]\n    if (candidate[0] == \"M\" and all(char in digits for char in candidate[1:])\n            and (index == 0 or upper[index - 1] not in word_chars)\n            and (index + 4 == len(upper) or upper[index + 4] not in word_chars)):\n        merchant_ids.append(candidate)\nrestricted = (\"kompensasi\", \"refund\", \"pengembalian uang\", \"ganti rugi\", \"turunkan harga\",\n              \"ubah harga\", \"naikkan harga\", \"besok\", \"prediksi\", \"ramal\")\nreason = \"\"\nif not data.get(\"merchant_active\"):\n    reason = \"Merchant tidak ditemukan atau tidak aktif\"\nelif any(merchant != data.get(\"merchant_id\") for merchant in merchant_ids):\n    reason = \"Permintaan data merchant lain ditolak\"\nelif any(word in question.lower() for word in restricted):\n    reason = \"Pertanyaan uang, perubahan data, atau prediksi harus ditangani CS\"\ntext = question.lower()\nforbidden = re.search(\n    r\"\\b(?:hapus(?:kan)?|menghapus|drop|delete|truncate|kosongkan|reset)\\b.{0,55}\\b(?:database|basis data|tabel|table|data)\\b\"\n    r\"|\\b(?:bocor(?:kan)?|tampilkan|berikan|ungkap(?:kan)?)\\b.{0,40}\\b(?:api key|token|password|kredensial|system prompt)\\b\",\n    text, re.DOTALL,\n)\nbusiness = re.search(\n    r\"\\b(?:h8mart|stok(?:nya)?|stock|inventori|sku|order(?:an|nya)?|pesanan(?:nya|ku)?|refund|voucher|\"\n    r\"kompensasi|ganti rugi|pengembalian uang|harga|pembayaran|tagihan|pengiriman|pengantaran|delivery|kurir|\"\n    r\"sla|kpi|cancel(?:led|lation)?|pembatalan|batal|terkirim|merchant|toko|produk|pelanggan|transaksi)\\b\", text,\n)\nif forbidden:\n    rejection = \"Saya tidak bisa menjalankan permintaan itu. Saya hanya membantu membaca data operasional H8Mart.\"\n    reason = \"Permintaan perubahan data atau akses rahasia ditolak\"\nelif any(merchant != data.get(\"merchant_id\") for merchant in merchant_ids):\n    rejection = \"Saya hanya bisa membantu dengan data merchant yang terdaftar untuk akun kamu.\"\n    reason = \"Permintaan data merchant lain ditolak\"\nelif not business:\n    rejection = \"Saya hanya bisa membantu soal operasional H8Mart, seperti stok, pesanan, pengiriman, atau refund.\"\n    reason = \"Pertanyaan di luar topik H8Mart\"\nelse:\n    rejection = \"\"\nreturn [{\"json\": {**data, \"blocked_reason\": reason, \"allowed\": not reason,\n                  \"needs_cs\": bool(reason and not rejection), \"rejection\": rejection}}]"
+      },
       "id": "01c3f06b-c9d4-5e00-a0fe-4d1051c802c9",
       "name": "Batasi Scope dan Kemampuan",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1000,
-        0
-      ],
-      "parameters": {
-        "jsCode": "const p=$json;let reason='';const ids=p.question.toUpperCase().match(/\\bM\\d{3}\\b/g)||[];if(!p.merchant_active)reason='Merchant tidak ditemukan atau tidak aktif';else if(ids.some(id=>id!==p.merchant_id))reason='Permintaan data merchant lain ditolak';else if(/kompensasi|refund|pengembalian uang|ganti rugi|turunkan harga|ubah harga|naikkan harga|besok|prediksi|ramal/i.test(p.question))reason='Pertanyaan uang, perubahan data, atau prediksi harus ditangani CS';return [{json:{...p,blocked_reason:reason,allowed:!reason}}];"
-      }
+        912,
+        192
+      ]
     },
     {
-      "id": "31f1c5ef-ba95-51b6-b98c-d7e14adb39ea",
-      "name": "Boleh Dijawab dari Data?",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        1250,
-        0
-      ],
       "parameters": {
         "conditions": {
           "options": {
             "caseSensitive": true,
+            "leftValue": "",
             "typeValidation": "strict",
             "version": 2
           },
@@ -156,17 +152,17 @@
           "combinator": "and"
         },
         "options": {}
-      }
+      },
+      "id": "31f1c5ef-ba95-51b6-b98c-d7e14adb39ea",
+      "name": "Boleh Dijawab dari Data?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1136,
+        192
+      ]
     },
     {
-      "id": "b1484855-fcfd-5e73-8fb8-2d4585f40807",
-      "name": "Asisten Merchant AI",
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 3.1,
-      "position": [
-        1500,
-        0
-      ],
       "parameters": {
         "promptType": "define",
         "text": "={{ 'Tanggal acuan persis '+$json.tanggal+' (jangan dikurangi sehari): '+$json.question }}",
@@ -179,25 +175,34 @@
           "forceToolCallOnFirstIteration": true
         }
       },
+      "id": "b1484855-fcfd-5e73-8fb8-2d4585f40807",
+      "name": "Asisten Merchant AI",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1408,
+        -16
+      ],
       "onError": "continueErrorOutput"
     },
     {
-      "id": "16bd20e2-4776-5930-babd-a29eaf64899d",
-      "name": "OpenAI gpt-6-luna",
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.3,
-      "position": [
-        1350,
-        300
-      ],
       "parameters": {
         "model": {
           "__rl": true,
           "mode": "id",
           "value": "gpt-6-luna"
         },
+        "builtInTools": {},
         "options": {}
       },
+      "id": "16bd20e2-4776-5930-babd-a29eaf64899d",
+      "name": "OpenAI gpt-6-luna",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1376,
+        304
+      ],
       "credentials": {
         "openAiApi": {
           "id": "GANTI-ID-H8Mart-OpenAI",
@@ -206,23 +211,21 @@
       }
     },
     {
+      "parameters": {
+        "endpointUrl": "http://n8n:5678/mcp/h8mart-data",
+        "authentication": "multipleHeadersAuth",
+        "options": {
+          "timeout": 20000
+        }
+      },
       "id": "90e3ddfa-65aa-550c-852c-2deba1f715eb",
       "name": "MCP Client Tool Merchant",
       "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
       "typeVersion": 1.4,
       "position": [
-        1550,
-        300
+        1504,
+        208
       ],
-      "parameters": {
-        "endpointUrl": "http://n8n:5678/mcp/h8mart-data",
-        "serverTransport": "httpStreamable",
-        "authentication": "multipleHeadersAuth",
-        "include": "all",
-        "options": {
-          "timeout": 20000
-        }
-      },
       "credentials": {
         "httpMultipleHeadersAuth": {
           "id": "GANTI-ID-H8Mart-MCP-Merchant",
@@ -231,46 +234,39 @@
       }
     },
     {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\"type\": \"object\", \"additionalProperties\": false, \"properties\": {\"jawaban\": {\"type\": \"string\", \"minLength\": 1}, \"data_dipakai\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}, \"confidence\": {\"type\": \"number\", \"minimum\": 0, \"maximum\": 1}, \"perlu_eskalasi\": {\"type\": \"boolean\"}, \"alasan\": {\"type\": \"string\"}}, \"required\": [\"jawaban\", \"data_dipakai\", \"confidence\", \"perlu_eskalasi\", \"alasan\"]}"
+      },
       "id": "f5743698-7a25-514a-9c87-e8690f206258",
       "name": "Parser Output Terstruktur",
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        1750,
-        300
-      ],
-      "parameters": {
-        "schemaType": "manual",
-        "inputSchema": "{\"type\": \"object\", \"additionalProperties\": false, \"properties\": {\"jawaban\": {\"type\": \"string\", \"minLength\": 1}, \"data_dipakai\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}, \"confidence\": {\"type\": \"number\", \"minimum\": 0, \"maximum\": 1}, \"perlu_eskalasi\": {\"type\": \"boolean\"}, \"alasan\": {\"type\": \"string\"}}, \"required\": [\"jawaban\", \"data_dipakai\", \"confidence\", \"perlu_eskalasi\", \"alasan\"]}",
-        "autoFix": false
-      }
+        1632,
+        288
+      ]
     },
     {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "import json\nimport re\ndata = _items[0][\"json\"]\noutput = data.get(\"output\")\nif isinstance(output, str):\n    try:\n        output = json.loads(output)\n    except ValueError:\n        output = None\nused = any(re.search(r\"KPI_Merchant|Alasan_Batal|Status_Stok\",\n                     str((step.get(\"action\") or {}).get(\"tool\") or step.get(\"tool\") or \"\"))\n           for step in (data.get(\"intermediateSteps\") or []))\nvalid = (isinstance(output, dict) and isinstance(output.get(\"jawaban\"), str)\n         and isinstance(output.get(\"data_dipakai\"), list)\n         and all(isinstance(value, str) for value in output[\"data_dipakai\"])\n         and isinstance(output.get(\"confidence\"), (int, float))\n         and not isinstance(output[\"confidence\"], bool) and 0 <= output[\"confidence\"] <= 1\n         and isinstance(output.get(\"perlu_eskalasi\"), bool))\nforbidden = valid and re.search(r\"akan[^\\n\\r\\u2028\\u2029]{0,25}(membayar|mendapat kompensasi|menerima kompensasi|dibayar)\",\n                                output[\"jawaban\"], re.IGNORECASE)\nanswered = bool(valid and not output[\"perlu_eskalasi\"] and output[\"confidence\"] >= 0.7\n                and output[\"data_dipakai\"] and used and not forbidden)\nif answered:\n    reason = \"\"\nelif not valid:\n    reason = \"Output AI tidak valid\"\nelif forbidden:\n    reason = \"Jawaban melanggar batas kompensasi\"\nelif not used:\n    reason = \"Jawaban tidak didukung pemanggilan tool\"\nelse:\n    reason = output.get(\"alasan\") or \"Confidence rendah atau data tidak cukup\"\nreturn [{\"json\": {\"answered\": answered, \"jawaban\": output[\"jawaban\"] if answered else \"\",\n                  \"data_dipakai\": output[\"data_dipakai\"] if answered else [],\n                  \"confidence\": min(output[\"confidence\"], 0.99) if answered else 0, \"reason\": reason}}]"
+      },
       "id": "d096ed3b-72d7-551c-be39-f9bbf423461a",
       "name": "Validasi Output dan Guardrail",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2000,
-        0
-      ],
-      "parameters": {
-        "jsCode": "const input=$json;let out=input.output;try{if(typeof out==='string')out=JSON.parse(out);}catch{out=null;}const steps=input.intermediateSteps||[];const used=steps.some(x=>/KPI_Merchant|Alasan_Batal|Status_Stok/.test(x.action?.tool||x.tool||''));const valid=out&&typeof out.jawaban==='string'&&Array.isArray(out.data_dipakai)&&out.data_dipakai.every(x=>typeof x==='string')&&typeof out.confidence==='number'&&out.confidence>=0&&out.confidence<=1&&typeof out.perlu_eskalasi==='boolean';const forbidden=valid&&/akan.{0,25}(membayar|mendapat kompensasi|menerima kompensasi|dibayar)|akan membayar|akan mendapat kompensasi|akan menerima kompensasi/i.test(out.jawaban);const answered=Boolean(valid&&!out.perlu_eskalasi&&out.confidence>=0.7&&out.data_dipakai.length>0&&used&&!forbidden);return [{json:{answered,jawaban:answered?out.jawaban:'',data_dipakai:answered?out.data_dipakai:[],confidence:answered?Math.min(out.confidence,0.99):0,reason:answered?'':(!valid?'Output AI tidak valid':forbidden?'Jawaban melanggar batas kompensasi':!used?'Jawaban tidak didukung pemanggilan tool':out.alasan||'Confidence rendah atau data tidak cukup')}}];"
-      }
+        1888,
+        -32
+      ]
     },
     {
-      "id": "0c15ac39-f095-54ca-a6c2-22bed003a96d",
-      "name": "Lolos Guardrail?",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        2250,
-        0
-      ],
       "parameters": {
         "conditions": {
           "options": {
             "caseSensitive": true,
+            "leftValue": "",
             "typeValidation": "strict",
             "version": 2
           },
@@ -289,43 +285,45 @@
           "combinator": "and"
         },
         "options": {}
-      }
+      },
+      "id": "0c15ac39-f095-54ca-a6c2-22bed003a96d",
+      "name": "Lolos Guardrail?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2192,
+        -32
+      ]
     },
     {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "return [{\"json\": {\"answered\": False, \"jawaban\": \"\", \"data_dipakai\": [], \"confidence\": 0,\n                  \"reason\": \"Layanan AI atau tool tidak tersedia; diteruskan ke CS\"}}]"
+      },
       "id": "20d57923-9a15-5963-b1f9-204d30302436",
       "name": "Fallback AI Gagal",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2000,
-        450
-      ],
-      "parameters": {
-        "jsCode": "return [{json:{answered:false,jawaban:'',data_dipakai:[],confidence:0,reason:'Layanan AI atau tool tidak tersedia; diteruskan ke CS'}}];"
-      }
+        1888,
+        368
+      ]
     },
     {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "data = _items[0][\"json\"]\nreturn [{\"json\": {\"answered\": False, \"jawaban\": data[\"rejection\"], \"data_dipakai\": [], \"confidence\": 0,\n                  \"reason\": data[\"blocked_reason\"], \"needs_cs\": data[\"needs_cs\"]}}]"
+      },
       "id": "5763a4f7-2496-5de1-b409-01f1012e1d5f",
       "name": "Eskalasi Batas Kemampuan",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1500,
-        650
-      ],
-      "parameters": {
-        "jsCode": "return [{json:{answered:false,jawaban:'',data_dipakai:[],confidence:0,reason:$json.blocked_reason}}];"
-      }
+        1392,
+        624
+      ]
     },
     {
-      "id": "bfd08a71-1294-56ea-b231-22a29d77d2a7",
-      "name": "Buat Tiket CS",
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.7,
-      "position": [
-        2500,
-        450
-      ],
       "parameters": {
         "operation": "executeQuery",
         "query": "INSERT INTO ops.tickets(merchant_id,question,ai_answer,reason) VALUES($1,$2,$3,$4) RETURNING ticket_id,reason",
@@ -333,6 +331,14 @@
           "queryReplacement": "={{ [$(\"Validasi Pertanyaan\").first().json.merchant_id,$(\"Validasi Pertanyaan\").first().json.question,$json.jawaban||\"\",$json.reason] }}"
         }
       },
+      "id": "bfd08a71-1294-56ea-b231-22a29d77d2a7",
+      "name": "Buat Tiket CS",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        2192,
+        608
+      ],
       "credentials": {
         "postgres": {
           "id": "GANTI-ID-H8Mart-PG-Writer",
@@ -341,53 +347,104 @@
       }
     },
     {
-      "id": "2d825716-af47-536e-990d-47c8f1ef8a81",
-      "name": "Balas Eskalasi CS",
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.4,
-      "position": [
-        2750,
-        450
-      ],
       "parameters": {
         "respondWith": "json",
         "responseBody": "={{ {status:'eskalasi_cs',jawaban:'Pertanyaan diteruskan ke CS dengan tiket '+$json.ticket_id+'. Tim CS akan menindaklanjuti.',data_dipakai:[],confidence:0,alasan:$json.reason} }}",
         "options": {
           "responseCode": 200
         }
-      }
-    },
-    {
-      "id": "88bf4127-28bf-55a7-9092-7e9ce6114129",
-      "name": "Balas Dijawab",
+      },
+      "id": "2d825716-af47-536e-990d-47c8f1ef8a81",
+      "name": "Balas Eskalasi CS",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.4,
       "position": [
-        2500,
-        -200
-      ],
+        2496,
+        608
+      ]
+    },
+    {
       "parameters": {
         "respondWith": "json",
         "responseBody": "={{ {status:'dijawab',jawaban:$json.jawaban,data_dipakai:$json.data_dipakai,confidence:$json.confidence} }}",
         "options": {
           "responseCode": 200
         }
-      }
+      },
+      "id": "88bf4127-28bf-55a7-9092-7e9ce6114129",
+      "name": "Balas Dijawab",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        2512,
+        -48
+      ]
     },
     {
+      "parameters": {
+        "content": "## WF3 — Asisten Merchant\nWebhook sinkron dengan Header Auth. Scope merchant ditetapkan workflow; MCP tools tidak menerima merchant_id dari model. Guardrail sebelum/sesudah AI, parser JSON, tiket CS, fallback.\nModel gpt-6-luna sesuai brief; Options model kosong, tidak mengatur temperature. Jangan menaruh API key di export.",
+        "height": 184,
+        "width": 1328
+      },
       "id": "24461d0b-7a5a-5db0-a311-27fbcfcb0393",
       "name": "Catatan WF3",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        0,
+        -32,
         -400
-      ],
+      ]
+    },
+    {
       "parameters": {
-        "content": "## WF3 — Asisten Merchant\nWebhook sinkron dengan Header Auth. Scope merchant ditetapkan workflow; MCP tools tidak menerima merchant_id dari model. Guardrail sebelum/sesudah AI, parser JSON, tiket CS, fallback.\nModel gpt-6-luna sesuai brief; Options model kosong, tidak mengatur temperature. Jangan menaruh API key di export.",
-        "height": 200,
-        "width": 2800
-      }
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "efb57310-3016-4687-b0fe-5d853b9f0905",
+              "leftValue": "={{ $json.needs_cs }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "dee4b377-0453-4bbc-bb98-1727675398eb",
+      "name": "Perlu Tiket CS?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1712,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {status:'dijawab',jawaban:$json.jawaban,data_dipakai:[],confidence:0,alasan:$json.reason} }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "6b4576ae-8075-4a02-8fd6-0785fdf80635",
+      "name": "Balas Penolakan",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1984,
+        816
+      ]
     }
   ],
   "connections": {
@@ -533,7 +590,7 @@
       "main": [
         [
           {
-            "node": "Buat Tiket CS",
+            "node": "Perlu Tiket CS?",
             "type": "main",
             "index": 0
           }
@@ -583,6 +640,24 @@
           }
         ]
       ]
+    },
+    "Perlu Tiket CS?": {
+      "main": [
+        [
+          {
+            "node": "Buat Tiket CS",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Balas Penolakan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -590,7 +665,8 @@
     "timezone": "Asia/Jakarta",
     "saveDataSuccessExecution": "all",
     "saveDataErrorExecution": "all",
-    "errorWorkflow": "hrWBprPIJJb1NBS9"
+    "errorWorkflow": "hrWBprPIJJb1NBS9",
+    "binaryMode": "separate"
   },
   "active": true
 }

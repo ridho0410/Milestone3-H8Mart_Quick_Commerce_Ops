@@ -1,0 +1,175 @@
+{
+  "scope": "API tiruan lokal; bukan transaksi nyata",
+  "tests": [
+    {
+      "fixture": "event-delivery-late-ringan.json",
+      "http": 200,
+      "response": {
+        "order_id": "HM-SP-001",
+        "amount": "10000",
+        "status": "issued",
+        "payment_ref": "VC-00001"
+      }
+    },
+    {
+      "fixture": "event-delivery-late-berat.json",
+      "http": 200,
+      "response": {
+        "order_id": "HM-SP-002",
+        "amount": "20000",
+        "status": "issued",
+        "payment_ref": "VC-00002"
+      }
+    },
+    {
+      "fixture": "event-delivery-late-berat.json",
+      "http": 200,
+      "response": {
+        "status": "issued",
+        "order_id": "HM-SP-002",
+        "duplicate": true
+      }
+    },
+    {
+      "fixture": "event-order-failed-kecil.json",
+      "http": 200,
+      "response": {
+        "order_id": "HM-SP-003",
+        "amount": "80000",
+        "status": "refunded",
+        "payment_ref": "RF-00001"
+      }
+    },
+    {
+      "fixture": "event-order-failed-kecil.json",
+      "http": 200,
+      "response": {
+        "status": "refunded",
+        "order_id": "HM-SP-003",
+        "duplicate": true
+      }
+    },
+    {
+      "fixture": "event-order-failed-belum-bayar.json",
+      "http": 200,
+      "response": {
+        "route": "skip",
+        "order_id": "HM-SP-007",
+        "status": "tidak_perlu_refund",
+        "reason": "pembayaran_belum_tertagih_atau_sudah_refund"
+      }
+    },
+    {
+      "fixture": "event-order-failed-besar.json",
+      "http": 202,
+      "response": {
+        "status": "pending_approval",
+        "order_id": "HM-SP-004",
+        "amount": 296000
+      }
+    },
+    {
+      "approval_order": "HM-SP-004",
+      "decision": "approve",
+      "resume_http": 200
+    },
+    {
+      "approval_replay_order": "HM-SP-004",
+      "http": 409
+    },
+    {
+      "fixture": "event-order-failed-ditolak.json",
+      "http": 202,
+      "response": {
+        "status": "pending_approval",
+        "order_id": "HM-SP-005",
+        "amount": 224000
+      }
+    },
+    {
+      "approval_order": "HM-SP-005",
+      "decision": "reject",
+      "resume_http": 200
+    },
+    {
+      "approval_replay_order": "HM-SP-005",
+      "http": 409
+    },
+    {
+      "fixture": "event-order-failed-retry.json",
+      "http": 200,
+      "response": {
+        "order_id": "HM-SP-008",
+        "amount": "80000",
+        "status": "refunded",
+        "payment_ref": "RF-00003"
+      }
+    },
+    {
+      "fixture": "event-order-failed-payment-down.json",
+      "http": 202,
+      "response": {
+        "status": "pending_approval",
+        "order_id": "HM-SP-099",
+        "amount": 368000
+      }
+    },
+    {
+      "approval_order": "HM-SP-099",
+      "decision": "approve",
+      "purpose": "Payment down -> dead-letter"
+    }
+  ],
+  "vouchers": {
+    "count": 2,
+    "calls": 9,
+    "vouchers": [
+      {
+        "idempotency_key": "voucher:HM-SP-001",
+        "voucher_id": "VC-00001",
+        "order_id": "HM-SP-001",
+        "amount": 10000,
+        "status": "succeeded",
+        "replayed": false
+      },
+      {
+        "idempotency_key": "voucher:HM-SP-002",
+        "voucher_id": "VC-00002",
+        "order_id": "HM-SP-002",
+        "amount": 20000,
+        "status": "succeeded",
+        "replayed": false
+      }
+    ]
+  },
+  "refunds": {
+    "count": 3,
+    "calls": 9,
+    "refunds": [
+      {
+        "idempotency_key": "refund:HM-SP-003",
+        "refund_id": "RF-00001",
+        "order_id": "HM-SP-003",
+        "amount": 80000,
+        "status": "succeeded",
+        "replayed": false
+      },
+      {
+        "idempotency_key": "refund:HM-SP-004",
+        "refund_id": "RF-00002",
+        "order_id": "HM-SP-004",
+        "amount": 296000,
+        "status": "succeeded",
+        "replayed": false
+      },
+      {
+        "idempotency_key": "refund:HM-SP-008",
+        "refund_id": "RF-00003",
+        "order_id": "HM-SP-008",
+        "amount": 80000,
+        "status": "succeeded",
+        "replayed": false
+      }
+    ]
+  }
+}

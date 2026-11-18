@@ -1,0 +1,156 @@
+{
+  "dead_letter": [
+    {
+      "node": "Ambil Stok Merchant API",
+      "payload": {
+        "merchant_id": "M009"
+      },
+      "attempts": 3,
+      "workflow": "WF1",
+      "business_key": "M009",
+      "execution_id": "4",
+      "error_message": "Merchant Stock API gagal setelah 3 percobaan"
+    },
+    {
+      "node": "Ambil Stok Merchant API",
+      "payload": {
+        "merchant_id": "M009"
+      },
+      "attempts": 3,
+      "workflow": "WF1",
+      "business_key": "M009",
+      "execution_id": "5",
+      "error_message": "Merchant Stock API gagal setelah 3 percobaan"
+    },
+    {
+      "node": "Ambil Stok Merchant API",
+      "payload": {
+        "merchant_id": "M009"
+      },
+      "attempts": 3,
+      "workflow": "WF1",
+      "business_key": "M009",
+      "execution_id": "26",
+      "error_message": "Merchant Stock API gagal setelah 3 percobaan"
+    },
+    {
+      "node": "Payment Refund",
+      "payload": {
+        "kind": "Refund",
+        "amount": 368000,
+        "order_id": "HM-SP-099"
+      },
+      "attempts": 3,
+      "workflow": "WF4",
+      "business_key": "HM-SP-099",
+      "execution_id": "55",
+      "error_message": "Payment gagal setelah 3 percobaan"
+    },
+    {
+      "node": "Ambil Stok Merchant API",
+      "payload": {
+        "merchant_id": "M009"
+      },
+      "attempts": 3,
+      "workflow": "WF1",
+      "business_key": "M009",
+      "execution_id": "57",
+      "error_message": "Merchant Stock API gagal setelah 3 percobaan"
+    },
+    {
+      "node": "Ambil Stok Merchant API",
+      "payload": {
+        "merchant_id": "M009"
+      },
+      "attempts": 3,
+      "workflow": "WF1",
+      "business_key": "M009",
+      "execution_id": "58",
+      "error_message": "Merchant Stock API gagal setelah 3 percobaan"
+    },
+    {
+      "node": "Ambil Stok Merchant API",
+      "payload": {
+        "merchant_id": "M009"
+      },
+      "attempts": 3,
+      "workflow": "WF1",
+      "business_key": "M009",
+      "execution_id": "59",
+      "error_message": "Merchant Stock API gagal setelah 3 percobaan"
+    },
+    {
+      "node": "Ambil Stok Merchant API",
+      "payload": {
+        "merchant_id": "M009"
+      },
+      "attempts": 3,
+      "workflow": "WF1",
+      "business_key": "M009",
+      "execution_id": "72",
+      "error_message": "Merchant Stock API gagal setelah 3 percobaan"
+    },
+    {
+      "node": "Ambil Stok Merchant API",
+      "payload": {
+        "merchant_id": "M009"
+      },
+      "attempts": 3,
+      "workflow": "WF1",
+      "business_key": "M009",
+      "execution_id": "76",
+      "error_message": "Merchant Stock API gagal setelah 3 percobaan"
+    },
+    {
+      "node": "Ambil Stok Merchant API",
+      "payload": {
+        "merchant_id": "M009"
+      },
+      "attempts": 3,
+      "workflow": "WF1",
+      "business_key": "M009",
+      "execution_id": "77",
+      "error_message": "Merchant Stock API gagal setelah 3 percobaan"
+    },
+    {
+      "node": "Ambil Stok Merchant API",
+      "payload": {
+        "merchant_id": "M009"
+      },
+      "attempts": 3,
+      "workflow": "WF1",
+      "business_key": "M009",
+      "execution_id": "78",
+      "error_message": "Merchant Stock API gagal setelah 3 percobaan"
+    }
+  ],
+  "latest_sync_runs": [
+    {
+      "run_at": "2026-11-09T13:00:45.982922+07:00",
+      "run_id": 9,
+      "duration_ms": 7106,
+      "rows_synced": 188,
+      "merchants_ok": 11,
+      "new_stockouts": 0,
+      "merchants_total": 12
+    },
+    {
+      "run_at": "2026-11-09T13:00:36.388684+07:00",
+      "run_id": 8,
+      "duration_ms": 6832,
+      "rows_synced": 188,
+      "merchants_ok": 11,
+      "new_stockouts": 1,
+      "merchants_total": 12
+    },
+    {
+      "run_at": "2026-11-09T13:00:23.837241+07:00",
+      "run_id": 7,
+      "duration_ms": 6970,
+      "rows_synced": 188,
+      "merchants_ok": 11,
+      "new_stockouts": 0,
+      "merchants_total": 12
+    }
+  ]
+}

@@ -1,0 +1,180 @@
+{
+  "scope": "Stack lokal sintetis",
+  "tests": [
+    {
+      "trigger": "Manual Sinkron",
+      "execution_id": "58",
+      "status": "success",
+      "nodes": [
+        "Manual Sinkron",
+        "Mulai Sinkron",
+        "Ambil Daftar Merchant",
+        "Loop Per Merchant",
+        "Ambil Stok Merchant API",
+        "Catat Merchant Dead Letter",
+        "Alert Merchant Gagal Telegram",
+        "Lanjut Merchant Berikutnya",
+        "Normalisasi Stok",
+        "Ada Baris Stok?",
+        "Ambil Katalog Produk",
+        "Gabungkan Katalog - Merge",
+        "Validasi Hasil Merge",
+        "Upsert Stok",
+        "Ringkas Sinkron",
+        "Catat Sync Run",
+        "Terlalu Lambat?",
+        "Heartbeat Uptime Kuma",
+        "Ada Produk Habis Baru?"
+      ],
+      "sync_run": {
+        "run_id": "5",
+        "run_at": "2026-11-09T05:56:55.595Z",
+        "merchants_total": 12,
+        "merchants_ok": 11,
+        "rows_synced": 188,
+        "new_stockouts": 0,
+        "duration_ms": 7178
+      }
+    },
+    {
+      "trigger": "Manual Sinkron",
+      "execution_id": "59",
+      "status": "success",
+      "nodes": [
+        "Manual Sinkron",
+        "Mulai Sinkron",
+        "Ambil Daftar Merchant",
+        "Loop Per Merchant",
+        "Ambil Stok Merchant API",
+        "Catat Merchant Dead Letter",
+        "Alert Merchant Gagal Telegram",
+        "Lanjut Merchant Berikutnya",
+        "Normalisasi Stok",
+        "Ada Baris Stok?",
+        "Ambil Katalog Produk",
+        "Gabungkan Katalog - Merge",
+        "Validasi Hasil Merge",
+        "Upsert Stok",
+        "Ringkas Sinkron",
+        "Catat Sync Run",
+        "Terlalu Lambat?",
+        "Heartbeat Uptime Kuma",
+        "Ada Produk Habis Baru?"
+      ],
+      "sync_run": {
+        "run_id": "6",
+        "run_at": "2026-11-09T05:57:03.646Z",
+        "merchants_total": 12,
+        "merchants_ok": 11,
+        "rows_synced": 188,
+        "new_stockouts": 0,
+        "duration_ms": 6893
+      }
+    },
+    {
+      "fixture": "event-order-created-ok.json",
+      "http": 200,
+      "response": {
+        "status": "diterima",
+        "order_id": "HM-TEST-001",
+        "duplicate": true,
+        "stock_status": "cukup",
+        "warning": null
+      }
+    },
+    {
+      "fixture": "event-order-created-stok-habis.json",
+      "http": 409,
+      "response": {
+        "status": "ditolak",
+        "alasan": "stok_habis",
+        "order_id": "HM-TEST-002"
+      }
+    },
+    {
+      "fixture": "event-order-created-stok-menipis.json",
+      "http": 200,
+      "response": {
+        "status": "diterima",
+        "order_id": "HM-TEST-003",
+        "duplicate": true,
+        "stock_status": "tipis",
+        "warning": "Stok setelah permintaan menipis"
+      }
+    },
+    {
+      "fixture": "event-order-created-item-kosong.json",
+      "http": 422,
+      "response": {
+        "status": "ditolak",
+        "alasan": "event_atau_item_tidak_valid"
+      }
+    },
+    {
+      "fixture": "event-order-created-ok.json",
+      "http": 200,
+      "response": {
+        "status": "diterima",
+        "order_id": "HM-TEST-001",
+        "duplicate": true,
+        "stock_status": "cukup",
+        "warning": null
+      }
+    },
+    {
+      "case": "negative_qty",
+      "http": 422
+    },
+    {
+      "case": "unknown_sku",
+      "http": 422
+    },
+    {
+      "case": "too_many_units",
+      "http": 409
+    },
+    {
+      "case": "wrong_amount",
+      "http": 422
+    },
+    {
+      "case": "missing_header",
+      "http": 403
+    },
+    {
+      "trigger": "Manual Digest",
+      "execution_id": "69",
+      "status": "success",
+      "nodes": [
+        "Manual Digest",
+        "Hitung KPI Harian",
+        "Digest Berisi Data?",
+        "Alasan Batal - MCP Client",
+        "Susun Digest",
+        "Kirim Digest Telegram",
+        "Jejak Digest Notification"
+      ],
+      "digest": {
+        "channel": "ops-digest",
+        "title": "Digest H8Mart 2026-11-08",
+        "text": "H8Mart — 2026-11-08\nOrder: 162\nCancel rate: 15.43%\nSLA 30 menit: 82.84%\nAlasan batal: [{\"alasan\":\"kurir_tidak_ada\",\"jumlah\":9},{\"alasan\":\"stok_habis\",\"jumlah\":9},{\"alasan\":\"merchant_menolak\",\"jumlah\":3},{\"alasan\":\"pelanggan_membatalkan\",\"jumlah\":2},{\"alasan\":\"pembayaran_gagal\",\"jumlah\":2}]"
+      },
+      "telegram_message_id": 10
+    }
+  ],
+  "stock_calls": {
+    "M001": 3,
+    "M002": 3,
+    "M003": 3,
+    "M004": 6,
+    "M005": 3,
+    "M006": 3,
+    "M007": 3,
+    "M008": 3,
+    "M009": 9,
+    "M010": 3,
+    "M011": 3,
+    "M012": 3
+  },
+  "stock_rows": 205
+}

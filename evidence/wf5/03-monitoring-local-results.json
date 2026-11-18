@@ -1,0 +1,154 @@
+{
+  "scope": "Uji lokal; jadwal sementara15 detik dan ambang1ms dikembalikan ke15 menit/07WIB dan12000ms; heartbeat Kuma final1200detik",
+  "tests": [
+    {
+      "case": "sync_zero_rows",
+      "execution_id": "72",
+      "status": "error",
+      "mode": "trigger",
+      "nodes": [
+        "Jadwal Sinkron 15 Menit",
+        "Mulai Sinkron",
+        "Ambil Daftar Merchant",
+        "Loop Per Merchant",
+        "Ambil Stok Merchant API",
+        "Catat Merchant Dead Letter",
+        "Alert Merchant Gagal Telegram",
+        "Lanjut Merchant Berikutnya",
+        "Normalisasi Stok",
+        "Ada Baris Stok?",
+        "Gagal - Sinkron 0 Baris"
+      ]
+    },
+    {
+      "case": "digest_empty",
+      "execution_id": "74",
+      "status": "error",
+      "mode": "trigger",
+      "nodes": [
+        "Jadwal Digest 07 WIB",
+        "Hitung KPI Harian",
+        "Digest Berisi Data?",
+        "Gagal - Digest Kosong"
+      ]
+    },
+    {
+      "case": "duration_threshold_temporarily_1ms",
+      "execution_id": "76",
+      "status": "success",
+      "mode": "manual",
+      "nodes": [
+        "Manual Sinkron",
+        "Mulai Sinkron",
+        "Ambil Daftar Merchant",
+        "Loop Per Merchant",
+        "Ambil Stok Merchant API",
+        "Catat Merchant Dead Letter",
+        "Alert Merchant Gagal Telegram",
+        "Lanjut Merchant Berikutnya",
+        "Normalisasi Stok",
+        "Ada Baris Stok?",
+        "Ambil Katalog Produk",
+        "Gabungkan Katalog - Merge",
+        "Validasi Hasil Merge",
+        "Upsert Stok",
+        "Ringkas Sinkron",
+        "Catat Sync Run",
+        "Terlalu Lambat?",
+        "Alert Perlambatan Telegram",
+        "Heartbeat Uptime Kuma",
+        "Ada Produk Habis Baru?"
+      ]
+    },
+    {
+      "case": "new_stockout",
+      "execution_id": "77",
+      "status": "success",
+      "mode": "manual",
+      "nodes": [
+        "Manual Sinkron",
+        "Mulai Sinkron",
+        "Ambil Daftar Merchant",
+        "Loop Per Merchant",
+        "Ambil Stok Merchant API",
+        "Catat Merchant Dead Letter",
+        "Alert Merchant Gagal Telegram",
+        "Lanjut Merchant Berikutnya",
+        "Normalisasi Stok",
+        "Ada Baris Stok?",
+        "Ambil Katalog Produk",
+        "Gabungkan Katalog - Merge",
+        "Validasi Hasil Merge",
+        "Upsert Stok",
+        "Ringkas Sinkron",
+        "Catat Sync Run",
+        "Terlalu Lambat?",
+        "Heartbeat Uptime Kuma",
+        "Ada Produk Habis Baru?",
+        "Laporkan Produk Habis"
+      ],
+      "sync_run": {
+        "run_id": "8",
+        "run_at": "2026-11-09T06:00:36.388Z",
+        "merchants_total": 12,
+        "merchants_ok": 11,
+        "rows_synced": 188,
+        "new_stockouts": 1,
+        "duration_ms": 6832
+      }
+    },
+    {
+      "case": "restored_normal_stock_and_heartbeat",
+      "execution_id": "78",
+      "status": "success",
+      "mode": "manual",
+      "nodes": [
+        "Manual Sinkron",
+        "Mulai Sinkron",
+        "Ambil Daftar Merchant",
+        "Loop Per Merchant",
+        "Ambil Stok Merchant API",
+        "Catat Merchant Dead Letter",
+        "Alert Merchant Gagal Telegram",
+        "Lanjut Merchant Berikutnya",
+        "Normalisasi Stok",
+        "Ada Baris Stok?",
+        "Ambil Katalog Produk",
+        "Gabungkan Katalog - Merge",
+        "Validasi Hasil Merge",
+        "Upsert Stok",
+        "Ringkas Sinkron",
+        "Catat Sync Run",
+        "Terlalu Lambat?",
+        "Heartbeat Uptime Kuma",
+        "Ada Produk Habis Baru?"
+      ]
+    }
+  ],
+  "central_alerts": [
+    {
+      "execution_id": "75",
+      "status": "success",
+      "text": "Workflow: H8Mart WF1 - Stock Sync Order Digest\nNode: Gagal - Digest Kosong\nWaktu: 2026-11-09T06:00:15.104Z\nBusiness key: digest-2099-01-01\nError: Digest tidak memiliki order",
+      "telegram_sent": true
+    },
+    {
+      "execution_id": "73",
+      "status": "success",
+      "text": "Workflow: H8Mart WF1 - Stock Sync Order Digest\nNode: Gagal - Sinkron 0 Baris\nWaktu: 2026-11-09T06:00:06.970Z\nBusiness key: stock-sync\nError: Sinkron 0 baris; heartbeat tidak dikirim",
+      "telegram_sent": true
+    },
+    {
+      "execution_id": "56",
+      "status": "success",
+      "text": "Workflow: H8Mart WF4 - Compensation Refund\nNode: Gagal - Payment Refund\nWaktu: 2026-11-09T05:54:52.150Z\nBusiness key: HM-SP-099\nError: Payment Refund gagal setelah retry; masuk dead-letter",
+      "telegram_sent": true
+    },
+    {
+      "execution_id": "20",
+      "status": "error",
+      "text": "Workflow: H8Mart WF4 - Compensation Refund\nNode: Info Approval Telegram\nWaktu: 2026-11-09T05:40:07.305Z\nBusiness key: tidak-tersedia\nError: The connection to the server was closed unexpectedly, perhaps it is offline. You can retry the request immediately or wait and retry later.",
+      "telegram_sent": false
+    }
+  ]
+}

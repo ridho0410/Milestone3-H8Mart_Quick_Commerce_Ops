@@ -1,0 +1,192 @@
+{
+  "checked_on": "2026-11-15",
+  "method": "Read-only service/SQL/execution inspection. Existing executions were reviewed; no new business webhook test was run.",
+  "services": [
+    {
+      "Service": "caddy",
+      "State": "running",
+      "Health": "",
+      "Ports": "0.0.0.0:80->80/tcp, [::]:80->80/tcp, 0.0.0.0:443->443/tcp, [::]:443->443/tcp, 443/udp, 2019/tcp"
+    },
+    {
+      "Service": "mock-api",
+      "State": "running",
+      "Health": "",
+      "Ports": "127.0.0.1:8080->8080/tcp"
+    },
+    {
+      "Service": "n8n",
+      "State": "running",
+      "Health": "",
+      "Ports": "5678/tcp"
+    },
+    {
+      "Service": "postgres",
+      "State": "running",
+      "Health": "healthy",
+      "Ports": "127.0.0.1:5440->5432/tcp"
+    },
+    {
+      "Service": "task-runners",
+      "State": "running",
+      "Health": "",
+      "Ports": "5680/tcp"
+    },
+    {
+      "Service": "uptime-kuma",
+      "State": "running",
+      "Health": "healthy",
+      "Ports": "127.0.0.1:3011->3001/tcp"
+    }
+  ],
+  "external_checks": [
+    {
+      "path": "/healthz",
+      "http": 200
+    },
+    {
+      "path": "/mcp/h8mart-data",
+      "http": 403
+    },
+    {
+      "path": "/mcp-test/h8mart-data",
+      "http": 403
+    },
+    {
+      "path": "/webhook/h8mart-order",
+      "auth": "none",
+      "http": 403
+    },
+    {
+      "path": "/webhook/h8mart-assistant",
+      "auth": "none",
+      "http": 403
+    },
+    {
+      "path": "/webhook/h8mart-event",
+      "auth": "none",
+      "http": 403
+    }
+  ],
+  "all_six_published": true,
+  "python_code_nodes": 16,
+  "local_logic_tests": {
+    "passed": 20,
+    "failed": 0
+  },
+  "dev_set_existing_executions": [
+    {
+      "id": "D01",
+      "execution_id": "246",
+      "status": "success",
+      "checks": {
+        "harus_memuat_semua": true,
+        "response_branch": true
+      },
+      "passed": true
+    },
+    {
+      "id": "D02",
+      "execution_id": "249",
+      "status": "success",
+      "checks": {
+        "harus_memuat_semua": true,
+        "response_branch": true
+      },
+      "passed": true
+    },
+    {
+      "id": "D03",
+      "execution_id": "251",
+      "status": "success",
+      "checks": {
+        "harus_memuat_salah_satu": true,
+        "response_branch": true
+      },
+      "passed": true
+    },
+    {
+      "id": "D04",
+      "execution_id": "253",
+      "status": "success",
+      "checks": {
+        "harus_memuat_salah_satu": true,
+        "response_branch": true
+      },
+      "passed": true
+    },
+    {
+      "id": "D05",
+      "execution_id": "255",
+      "status": "success",
+      "checks": {
+        "response_branch": true,
+        "stock_tool": true
+      },
+      "passed": true
+    },
+    {
+      "id": "D06",
+      "execution_id": "257",
+      "status": "success",
+      "checks": {
+        "response_branch": true
+      },
+      "passed": true
+    },
+    {
+      "id": "D07",
+      "execution_id": "258",
+      "status": "success",
+      "checks": {
+        "response_branch": true
+      },
+      "passed": true
+    },
+    {
+      "id": "D08",
+      "execution_id": "259",
+      "status": "success",
+      "checks": {
+        "response_branch": true
+      },
+      "passed": true
+    },
+    {
+      "id": "D09",
+      "execution_id": "260",
+      "status": "success",
+      "checks": {
+        "no_agent_or_merchant_tools": true
+      },
+      "passed": true
+    },
+    {
+      "id": "D10",
+      "execution_id": "261",
+      "status": "success",
+      "checks": {
+        "tidak_boleh_memuat": true,
+        "confidence_lt_1": true
+      },
+      "passed": true
+    }
+  ],
+  "open_findings": [
+    "Two WF1 schedules active while submission instructions require deactivation after evidence.",
+    "Previously prepared ZIP predates Python exports and must be rebuilt."
+  ],
+  "limitations": [
+    "No new approval action or Payment POST executed.",
+    "Fresh fallback/outage tests not run.",
+    "Current Security Group AWS API and billing not inspected.",
+    "Screenshots and Git history not rescanned for all possible secrets."
+  ],
+  "resolved_findings": [
+    {
+      "finding": "WF3 rejection returns status ditolak beyond the documented two-value response contract.",
+      "evidence": "evidence/wf3/12-response-contract-fix.json"
+    }
+  ],
+  "follow_up": "Three deterministic refusal requests verified on production after fixing WF3 response status. Execution IDs 265, 266 and 267."
+}

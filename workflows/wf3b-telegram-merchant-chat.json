@@ -3,6 +3,12 @@
   "name": "H8Mart WF3b - Telegram Merchant Chat",
   "nodes": [
     {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
       "id": "e5bef801-eab5-551b-88c3-ea77343fb19c",
       "name": "Telegram Trigger Merchant",
       "type": "n8n-nodes-base.telegramTrigger",
@@ -11,29 +17,15 @@
         0,
         0
       ],
-      "parameters": {
-        "updates": [
-          "message"
-        ],
-        "additionalFields": {}
-      },
+      "webhookId": "h8mart-ridho-telegram-merchant",
       "credentials": {
         "telegramApi": {
           "id": "GANTI-ID-H8Mart-Telegram",
           "name": "H8Mart Telegram"
         }
-      },
-      "webhookId": "h8mart-ridho-telegram-merchant"
+      }
     },
     {
-      "id": "653c6015-9de4-5068-a0f8-963d46df72de",
-      "name": "Cek Allowlist Chat",
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.7,
-      "position": [
-        250,
-        0
-      ],
       "parameters": {
         "operation": "executeQuery",
         "query": "SELECT $1::text chat_id,$2::text question,(SELECT merchant_id FROM ops.telegram_merchants WHERE chat_id=$1::bigint) merchant_id",
@@ -41,6 +33,18 @@
           "queryReplacement": "={{ [$json.message.chat.id,$json.message.text||\"\"] }}"
         }
       },
+      "id": "653c6015-9de4-5068-a0f8-963d46df72de",
+      "name": "Cek Allowlist Chat",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        256,
+        0
+      ],
+      "retryOnFail": false,
+      "notesInFlow": false,
+      "executeOnce": false,
+      "alwaysOutputData": true,
       "credentials": {
         "postgres": {
           "id": "GANTI-ID-H8Mart-PG-Reader",
@@ -49,18 +53,11 @@
       }
     },
     {
-      "id": "5da0a377-e772-57e0-8f17-098c004f6f79",
-      "name": "Chat Terdaftar?",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        500,
-        0
-      ],
       "parameters": {
         "conditions": {
           "options": {
             "caseSensitive": true,
+            "leftValue": "",
             "typeValidation": "strict",
             "version": 2
           },
@@ -79,17 +76,17 @@
           "combinator": "and"
         },
         "options": {}
-      }
+      },
+      "id": "5da0a377-e772-57e0-8f17-098c004f6f79",
+      "name": "Chat Terdaftar?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        512,
+        0
+      ]
     },
     {
-      "id": "ca114813-ccd2-5a22-8871-53cc22c9a37d",
-      "name": "Tanya WF3 melalui Webhook",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        750,
-        -100
-      ],
       "parameters": {
         "method": "POST",
         "url": "http://n8n:5678/webhook/h8mart-assistant",
@@ -102,6 +99,14 @@
           "timeout": 90000
         }
       },
+      "id": "ca114813-ccd2-5a22-8871-53cc22c9a37d",
+      "name": "Tanya WF3 melalui Webhook",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        752,
+        -96
+      ],
       "credentials": {
         "httpHeaderAuth": {
           "id": "GANTI-ID-H8Mart-Webhook",
@@ -110,71 +115,67 @@
       }
     },
     {
-      "id": "f01b593a-8ef3-573d-981b-b8671ca3e95d",
-      "name": "Balas Chat Merchant",
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
-      "position": [
-        1000,
-        -100
-      ],
       "parameters": {
-        "resource": "message",
-        "operation": "sendMessage",
         "chatId": "={{ $(\"Cek Allowlist Chat\").first().json.chat_id }}",
         "text": "={{ $json.jawaban }}",
         "additionalFields": {
           "appendAttribution": false
         }
       },
+      "id": "f01b593a-8ef3-573d-981b-b8671ca3e95d",
+      "name": "Balas Chat Merchant",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1008,
+        -96
+      ],
+      "webhookId": "8f1dabb4-4e03-4958-b3c7-6754fbf73ce3",
       "credentials": {
         "telegramApi": {
           "id": "GANTI-ID-H8Mart-Telegram",
           "name": "H8Mart Telegram"
         }
-      },
-      "webhookId": "8f1dabb4-4e03-4958-b3c7-6754fbf73ce3"
+      }
     },
     {
-      "id": "74f09e9d-0023-5c8f-b85b-6eb03fd1b334",
-      "name": "Tolak Chat Asing",
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
-      "position": [
-        750,
-        200
-      ],
       "parameters": {
-        "resource": "message",
-        "operation": "sendMessage",
         "chatId": "={{ $json.chat_id }}",
         "text": "Akun Telegram ini belum terdaftar sebagai merchant H8Mart. Hubungi CS untuk registrasi.",
         "additionalFields": {
           "appendAttribution": false
         }
       },
+      "id": "74f09e9d-0023-5c8f-b85b-6eb03fd1b334",
+      "name": "Tolak Chat Asing",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        752,
+        208
+      ],
+      "webhookId": "77e3af12-190b-47a1-85a2-3648a808f170",
       "credentials": {
         "telegramApi": {
           "id": "GANTI-ID-H8Mart-Telegram",
           "name": "H8Mart Telegram"
         }
-      },
-      "webhookId": "77e3af12-190b-47a1-85a2-3648a808f170"
+      }
     },
     {
+      "parameters": {
+        "content": "## WF3b — Chat Telegram Merchant\nPublish setelah HTTPS publik. Trigger v1.5 menerima pesan dan meneruskan callback approval native pada bot yang sama. Merchant berasal dari allowlist chat_id, bukan teks pesan. Pertanyaan diproses oleh WF3.",
+        "height": 170,
+        "width": 1200
+      },
       "id": "14dc2e44-b4b8-5566-8cd4-7706225930d5",
       "name": "Catatan Chat",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
         0,
-        -350
-      ],
-      "parameters": {
-        "content": "## WF3b — Chat Telegram Merchant\nPublish setelah HTTPS publik. Trigger v1.5 menerima pesan dan meneruskan callback approval native pada bot yang sama. Merchant berasal dari allowlist chat_id, bukan teks pesan. Pertanyaan diproses oleh WF3.",
-        "height": 170,
-        "width": 1200
-      }
+        -352
+      ]
     }
   ],
   "connections": {
@@ -235,7 +236,8 @@
     "timezone": "Asia/Jakarta",
     "saveDataSuccessExecution": "all",
     "saveDataErrorExecution": "all",
-    "errorWorkflow": "hrWBprPIJJb1NBS9"
+    "errorWorkflow": "hrWBprPIJJb1NBS9",
+    "binaryMode": "separate"
   },
   "active": true
 }

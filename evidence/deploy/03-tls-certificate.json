@@ -1,0 +1,32 @@
+{
+  "hostname_verified": true,
+  "protocol": "TLSv1.3",
+  "issuer": [
+    [
+      [
+        "countryName",
+        "US"
+      ]
+    ],
+    [
+      [
+        "organizationName",
+        "Let's Encrypt"
+      ]
+    ],
+    [
+      [
+        "commonName",
+        "YE1"
+      ]
+    ]
+  ],
+  "subjectAltName": [
+    [
+      "DNS",
+      "h8mart-ridho.duckdns.org"
+    ]
+  ],
+  "notBefore": "Nov  9 10:33:00 2026 GMT",
+  "notAfter": "Feb  7 10:32:59 2027 GMT"
+}

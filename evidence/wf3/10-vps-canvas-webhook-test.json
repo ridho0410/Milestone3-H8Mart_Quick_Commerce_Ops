@@ -1,0 +1,17 @@
+{
+  "scope": "UI editor manual Test URL HTTPS; model dan MCP server nyata, data sintetis",
+  "http": 200,
+  "request": {
+    "merchant_id": "M003",
+    "question": "Berapa total pesanan merchant saya kemarin?"
+  },
+  "response": {
+    "status": "dijawab",
+    "jawaban": "Total pesanan merchant Anda pada 2026-11-08 adalah 15 pesanan.",
+    "data_dipakai": [
+      "core.orders",
+      "core.deliveries"
+    ],
+    "confidence": 0.99
+  }
+}

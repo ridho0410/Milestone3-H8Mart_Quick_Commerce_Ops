@@ -1,0 +1,26 @@
+{
+  "test": "Key dummy tidak valid pada workflow uji terpisah; credential instruktur tidak diubah",
+  "http": 200,
+  "response": {
+    "status": "eskalasi_cs",
+    "jawaban": "Pertanyaan diteruskan ke CS dengan tiket 8. Tim CS akan menindaklanjuti.",
+    "data_dipakai": [],
+    "confidence": 0,
+    "alasan": "Layanan AI atau tool tidak tersedia; diteruskan ke CS"
+  },
+  "execution_id": "71",
+  "status": "success",
+  "nodes": [
+    "Terima Pertanyaan Merchant",
+    "Validasi Pertanyaan",
+    "Pertanyaan Valid?",
+    "Ambil Hari Data dan Merchant",
+    "Batasi Scope dan Kemampuan",
+    "Boleh Dijawab dari Data?",
+    "OpenAI gpt-6-luna",
+    "Asisten Merchant AI",
+    "Fallback AI Gagal",
+    "Buat Tiket CS",
+    "Balas Eskalasi CS"
+  ]
+}

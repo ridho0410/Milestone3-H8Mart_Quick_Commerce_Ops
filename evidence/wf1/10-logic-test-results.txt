@@ -1,0 +1,28 @@
+✔ Order rejects empty items (55.3331ms)
+✔ Order rejects negative quantity (51.0113ms)
+✔ Order rejects fractional quantity (50.9256ms)
+✔ Order rejects string amount (53.817ms)
+✔ Order rejects invalid SKU (49.4088ms)
+✔ Order accepts lowercase SKU before lookup (56.203ms)
+✔ Empty stock preserves a failure sentinel (51.4661ms)
+✔ Stock normalizes SKU and numeric quantity (52.465ms)
+✔ Stock rejects negative and repeated rows (162.5736ms)
+✔ Refund amount comes from DB including delivery fee (83.3311ms)
+✔ Unpaid order never reaches Payment (86.3155ms)
+✔ Merchant request for another merchant is stopped before AI (79.9631ms)
+✔ Invalid AI output escalates (67.0585ms)
+✔ Unsupported money promise escalates even with high confidence (68.0369ms)
+✔ Telegram approval rejects missing or foreign identity: approve with Ops identity (57.5558ms)
+✔ Telegram approval rejects missing or foreign identity: decline with Ops identity (55.7866ms)
+✔ Telegram approval rejects missing or foreign identity: missing identity (57.0653ms)
+✔ Telegram approval rejects missing or foreign identity: foreign identity (56.8557ms)
+✔ Telegram approval rejects missing or foreign identity: non-boolean decision (56.1628ms)
+✔ WF3 safe refusal follows the webhook response contract (1.1378ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1339.458

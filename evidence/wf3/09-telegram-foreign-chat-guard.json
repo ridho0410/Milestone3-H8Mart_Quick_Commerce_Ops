@@ -1,0 +1,18 @@
+{
+  "scope": "Uji terkontrol pada clone workflow; SQL allowlist dan If asli. Fixture ID sintetis; pengiriman balasan diganti pencatatan agar tidak menghubungi akun Telegram lain. Ini bukan percakapan nyata dari akun asing.",
+  "execution_id": "34",
+  "status": "success",
+  "nodes": [
+    "Manual Uji Chat Asing",
+    "Fixture Chat Asing",
+    "Cek Allowlist Chat",
+    "Chat Terdaftar?",
+    "Tolak Chat Asing"
+  ],
+  "result": {
+    "status": "ditolak",
+    "merchant_id": null,
+    "question_processed": false,
+    "message": "Akun Telegram ini belum terdaftar sebagai merchant H8Mart. Hubungi CS untuk registrasi."
+  }
+}

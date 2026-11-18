@@ -1,0 +1,10 @@
+{
+  "instance": "i-046bd31627a6b7036",
+  "region": "ap-southeast-3",
+  "instance_type": "t3.small",
+  "ssh_operator_ip_only": true,
+  "public_tcp_ports": [
+    80,
+    443
+  ]
+}

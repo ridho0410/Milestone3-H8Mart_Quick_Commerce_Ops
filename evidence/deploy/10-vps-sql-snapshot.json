@@ -1,0 +1,186 @@
+{
+  "checked_on": "2026-11-10",
+  "scope": "PostgreSQL VPS dengan data sintetis",
+  "queries": {
+    "data_day": "SELECT to_jsonb(d) FROM core.data_info d;",
+    "stock_counts": "SELECT json_build_object('rows',count(*),'product_id_filled',count(product_id)) FROM core.merchant_stock;",
+    "sync_runs": "SELECT json_agg(x) FROM (SELECT * FROM ops.sync_runs ORDER BY run_id DESC LIMIT 4)x;",
+    "refund_ledger": "SELECT json_agg(x) FROM (SELECT order_id,idempotency_key,amount,status,approved_by,payment_ref,note FROM ops.refund_actions ORDER BY order_id)x;",
+    "voucher_ledger": "SELECT json_agg(x) FROM (SELECT order_id,idempotency_key,amount,status,payment_ref FROM ops.compensations ORDER BY order_id)x;",
+    "dead_letter": "SELECT json_agg(x) FROM (SELECT workflow,node,execution_id,business_key,error_message,payload,attempts FROM ops.dead_letter ORDER BY id)x;",
+    "tickets": "SELECT json_agg(x) FROM (SELECT ticket_id,merchant_id,reason,status FROM ops.tickets ORDER BY ticket_id)x;"
+  },
+  "results": {
+    "data_day": {
+      "hari_data_terakhir": "2026-11-08"
+    },
+    "stock_counts": {
+      "rows": 205,
+      "product_id_filled": 205
+    },
+    "sync_runs": [
+      {
+        "run_id": 3,
+        "run_at": "2026-11-10T10:10:28.938929+07:00",
+        "merchants_total": 12,
+        "merchants_ok": 11,
+        "rows_synced": 188,
+        "new_stockouts": 0,
+        "duration_ms": 7117
+      },
+      {
+        "run_id": 2,
+        "run_at": "2026-11-09T18:50:05.128977+07:00",
+        "merchants_total": 12,
+        "merchants_ok": 11,
+        "rows_synced": 188,
+        "new_stockouts": 0,
+        "duration_ms": 8804
+      },
+      {
+        "run_id": 1,
+        "run_at": "2026-11-09T18:41:32.994384+07:00",
+        "merchants_total": 12,
+        "merchants_ok": 11,
+        "rows_synced": 188,
+        "new_stockouts": 2,
+        "duration_ms": 7816
+      }
+    ],
+    "refund_ledger": [
+      {
+        "order_id": "HM-SP-003",
+        "idempotency_key": "refund:HM-SP-003",
+        "amount": 80000,
+        "status": "refunded",
+        "approved_by": null,
+        "payment_ref": "RF-00001",
+        "note": null
+      },
+      {
+        "order_id": "HM-SP-004",
+        "idempotency_key": "refund:HM-SP-004",
+        "amount": 296000,
+        "status": "pending_approval",
+        "approved_by": null,
+        "payment_ref": null,
+        "note": null
+      },
+      {
+        "order_id": "HM-SP-005",
+        "idempotency_key": "refund:HM-SP-005",
+        "amount": 224000,
+        "status": "refunded",
+        "approved_by": "telegram:ISI_CHAT_ID_OPS",
+        "payment_ref": "RF-00002",
+        "note": null
+      },
+      {
+        "order_id": "HM-SP-008",
+        "idempotency_key": "refund:HM-SP-008",
+        "amount": 80000,
+        "status": "refunded",
+        "approved_by": null,
+        "payment_ref": "RF-00003",
+        "note": null
+      },
+      {
+        "order_id": "HM-SP-099",
+        "idempotency_key": "refund:HM-SP-099",
+        "amount": 368000,
+        "status": "failed",
+        "approved_by": "telegram:ISI_CHAT_ID_OPS",
+        "payment_ref": null,
+        "note": null
+      },
+      {
+        "order_id": "HM-VPS-REJECT",
+        "idempotency_key": "refund:HM-VPS-REJECT",
+        "amount": 224000,
+        "status": "rejected",
+        "approved_by": "telegram:ISI_CHAT_ID_OPS",
+        "payment_ref": null,
+        "note": null
+      }
+    ],
+    "voucher_ledger": [
+      {
+        "order_id": "HM-SP-001",
+        "idempotency_key": "voucher:HM-SP-001",
+        "amount": 10000,
+        "status": "issued",
+        "payment_ref": "VC-00001"
+      },
+      {
+        "order_id": "HM-SP-002",
+        "idempotency_key": "voucher:HM-SP-002",
+        "amount": 20000,
+        "status": "issued",
+        "payment_ref": "VC-00002"
+      },
+      {
+        "order_id": "HM-SP-009",
+        "idempotency_key": "voucher:HM-SP-009",
+        "amount": 20000,
+        "status": "issued",
+        "payment_ref": "VC-00003"
+      }
+    ],
+    "dead_letter": [
+      {
+        "workflow": "WF1",
+        "node": "Ambil Stok Merchant API",
+        "execution_id": "1",
+        "business_key": "M009",
+        "error_message": "Merchant Stock API gagal setelah 3 percobaan",
+        "payload": {
+          "merchant_id": "M009"
+        },
+        "attempts": 3
+      },
+      {
+        "workflow": "WF4",
+        "node": "Payment Refund",
+        "execution_id": "22",
+        "business_key": "HM-SP-099",
+        "error_message": "Payment gagal setelah 3 percobaan",
+        "payload": {
+          "kind": "Refund",
+          "amount": 368000,
+          "order_id": "HM-SP-099"
+        },
+        "attempts": 3
+      },
+      {
+        "workflow": "WF1",
+        "node": "Ambil Stok Merchant API",
+        "execution_id": "31",
+        "business_key": "M009",
+        "error_message": "Merchant Stock API gagal setelah 3 percobaan",
+        "payload": {
+          "merchant_id": "M009"
+        },
+        "attempts": 3
+      },
+      {
+        "workflow": "WF1",
+        "node": "Ambil Stok Merchant API",
+        "execution_id": "36",
+        "business_key": "M009",
+        "error_message": "Merchant Stock API gagal setelah 3 percobaan",
+        "payload": {
+          "merchant_id": "M009"
+        },
+        "attempts": 3
+      }
+    ],
+    "tickets": [
+      {
+        "ticket_id": 1,
+        "merchant_id": "M003",
+        "reason": "Permintaan data merchant lain ditolak",
+        "status": "open"
+      }
+    ]
+  }
+}

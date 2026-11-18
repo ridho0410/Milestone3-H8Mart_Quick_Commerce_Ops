@@ -1,0 +1,3 @@
+Command: docker compose exec -T postgres psql -U mcp_reader -d h8mart -c "INSERT INTO ops.dead_letter(workflow) VALUES ('read-only-test')"
+Expected non-zero exit, actual 1
+ERROR:  cannot execute INSERT in a read-only transaction

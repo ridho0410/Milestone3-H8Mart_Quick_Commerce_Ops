@@ -3,38 +3,31 @@
   "name": "H8Mart WF5 - Reliability Alert",
   "nodes": [
     {
+      "parameters": {},
       "id": "ce98c2c9-50c9-555b-85d2-c32f2c08a46c",
       "name": "Error Trigger",
       "type": "n8n-nodes-base.errorTrigger",
       "typeVersion": 1,
       "position": [
-        0,
-        0
-      ],
-      "parameters": {}
+        16,
+        48
+      ]
     },
     {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "import datetime\nimport json\nevent = _items[0][\"json\"]\nexecution = event.get(\"execution\") or {}\nerror = execution.get(\"error\")\nif error in (None, False, 0, \"\"):\n    error = event.get(\"error\") or {}\nmessage = error.get(\"message\")\ntry:\n    context = json.loads(message or \"{}\")\nexcept (ValueError, TypeError):\n    context = {}\nif not isinstance(context, dict):\n    context = {}\nkey = context.get(\"business_key\") or event.get(\"business_key\") or \"tidak-tersedia\"\nworkflow = (event.get(\"workflow\") or {}).get(\"name\") or context.get(\"workflow\") or \"H8Mart\"\nnode = (error.get(\"node\") or {}).get(\"name\") or execution.get(\"lastNodeExecuted\") or context.get(\"node\") or \"tidak-tersedia\"\nnow = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec=\"milliseconds\").replace(\"+00:00\", \"Z\")\nmessage = context.get(\"message\") or message or \"Kegagalan tidak dikenal\"\nreturn [{\"json\": {\"channel\": \"ops-alerts\", \"title\": \"H8Mart - Kegagalan workflow\",\n                  \"text\": f\"Workflow: {workflow}\\nNode: {node}\\nWaktu: {now}\\nBusiness key: {key}\\nError: {message}\"}}]"
+      },
       "id": "6cafe31c-9c78-5aa6-9830-cd187085c49f",
       "name": "Susun Alert",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        260,
-        0
-      ],
-      "parameters": {
-        "jsCode": "const e=$input.first().json; const err=e.execution?.error || e.error || {}; let ctx={}; try {ctx=JSON.parse(err.message||'{}')}catch{}; const key=ctx.business_key || e.business_key || 'tidak-tersedia'; return [{json:{channel:'ops-alerts',title:'H8Mart - Kegagalan workflow',text:`Workflow: ${e.workflow?.name || ctx.workflow || 'H8Mart'}\\nNode: ${err.node?.name || e.execution?.lastNodeExecuted || ctx.node || 'tidak-tersedia'}\\nWaktu: ${new Date().toISOString()}\\nBusiness key: ${key}\\nError: ${ctx.message || err.message || 'Kegagalan tidak dikenal'}`}}];"
-      }
+        240,
+        48
+      ]
     },
     {
-      "id": "3cb166f2-9783-59da-9f22-abcab9fed3c4",
-      "name": "Jejak Alert Notification",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        520,
-        0
-      ],
       "parameters": {
         "method": "POST",
         "url": "http://mock-api:8080/notify",
@@ -47,6 +40,14 @@
           "timeout": 10000
         }
       },
+      "id": "3cb166f2-9783-59da-9f22-abcab9fed3c4",
+      "name": "Jejak Alert Notification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        688,
+        48
+      ],
       "credentials": {
         "httpHeaderAuth": {
           "id": "GANTI-ID-H8Mart-Mock-API",
@@ -55,46 +56,44 @@
       }
     },
     {
+      "parameters": {
+        "chatId": "ISI_CHAT_ID_OPS",
+        "text": "={{ $('Susun Alert').first().json.text }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
       "id": "53536c48-75be-570a-bcf6-e8597ed06bab",
       "name": "Kirim Alert Telegram",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        780,
-        0
+        464,
+        48
       ],
-      "parameters": {
-        "resource": "message",
-        "operation": "sendMessage",
-        "chatId": "ISI_CHAT_ID_OPS",
-        "text": "={{ $('Susun Alert').first().json.text }}",
-        "additionalFields": {
-          "parse_mode": "HTML",
-          "appendAttribution": false
-        }
-      },
+      "webhookId": "83a1c5c5-f383-4c93-ad98-e0dba3f40fe9",
       "credentials": {
         "telegramApi": {
           "id": "GANTI-ID-H8Mart-Telegram",
           "name": "H8Mart Telegram"
         }
-      },
-      "webhookId": "83a1c5c5-f383-4c93-ad98-e0dba3f40fe9"
+      }
     },
     {
+      "parameters": {
+        "content": "## WF5 — Error Workflow pusat\nPasang sebagai Error Workflow WF1–WF4. Alert memuat business key yang dimasukkan sumber error. Notification adalah jejak lokal; Telegram wajib dikonfigurasi dan diuji sebelum siap dikumpulkan.",
+        "height": 180,
+        "width": 900
+      },
       "id": "999bd109-2d51-540e-ab02-08d9a385f8cb",
       "name": "Catatan WF5",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
         0,
-        -230
-      ],
-      "parameters": {
-        "content": "## WF5 — Error Workflow pusat\nPasang sebagai Error Workflow WF1–WF4. Alert memuat business key yang dimasukkan sumber error. Notification adalah jejak lokal; Telegram wajib dikonfigurasi dan diuji sebelum siap dikumpulkan.",
-        "height": 180,
-        "width": 900
-      }
+        -224
+      ]
     }
   ],
   "connections": {
@@ -113,7 +112,7 @@
       "main": [
         [
           {
-            "node": "Jejak Alert Notification",
+            "node": "Kirim Alert Telegram",
             "type": "main",
             "index": 0
           }
@@ -122,9 +121,14 @@
     },
     "Jejak Alert Notification": {
       "main": [
+        []
+      ]
+    },
+    "Kirim Alert Telegram": {
+      "main": [
         [
           {
-            "node": "Kirim Alert Telegram",
+            "node": "Jejak Alert Notification",
             "type": "main",
             "index": 0
           }
@@ -136,7 +140,8 @@
     "executionOrder": "v1",
     "timezone": "Asia/Jakarta",
     "saveDataSuccessExecution": "all",
-    "saveDataErrorExecution": "all"
+    "saveDataErrorExecution": "all",
+    "binaryMode": "separate"
   },
   "active": true
 }

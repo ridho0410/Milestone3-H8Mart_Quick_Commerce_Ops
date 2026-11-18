@@ -1,0 +1,94 @@
+{
+  "source": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonEC2/current/ap-southeast-3/index.json",
+  "checked": "2026-11-09",
+  "publicationDate": "2026-11-07T00:28:52Z",
+  "selected": [
+    {
+      "sku": "4GY5B543C56QEZ6A",
+      "attributes": {
+        "servicecode": "AmazonEC2",
+        "location": "Asia Pacific (Jakarta)",
+        "locationType": "AWS Region",
+        "instanceType": "t3.small",
+        "currentGeneration": "Yes",
+        "instanceFamily": "General purpose",
+        "vcpu": "2",
+        "physicalProcessor": "Intel Skylake E5 2686 v5",
+        "clockSpeed": "3.1 GHz",
+        "memory": "2 GiB",
+        "storage": "EBS only",
+        "networkPerformance": "Up to 5 Gigabit",
+        "processorArchitecture": "64-bit",
+        "tenancy": "Shared",
+        "operatingSystem": "Linux",
+        "licenseModel": "No License required",
+        "usagetype": "APS4-BoxUsage:t3.small",
+        "operation": "RunInstances",
+        "availabilityzone": "NA",
+        "capacitystatus": "Used",
+        "classicnetworkingsupport": "false",
+        "dedicatedEbsThroughput": "Up to 2085 Mbps",
+        "dedicatedEbsThroughputDescription": "174 Mbps",
+        "ecu": "NA",
+        "enhancedNetworkingSupported": "No",
+        "gpuMemory": "NA",
+        "instanceFamilyCategory": "General Purpose",
+        "intelAvxAvailable": "Yes",
+        "intelAvx2Available": "Yes",
+        "intelTurboAvailable": "Yes",
+        "marketoption": "OnDemand",
+        "normalizationSizeFactor": "1",
+        "preInstalledSw": "NA",
+        "processorFeatures": "AVX; AVX2; Intel AVX; Intel AVX2; Intel AVX512; Intel Turbo",
+        "regionCode": "ap-southeast-3",
+        "servicename": "Amazon Elastic Compute Cloud",
+        "vpcnetworkingsupport": "true"
+      },
+      "prices": {
+        "4GY5B543C56QEZ6A.JRTCKXETXF.6YS6EN2CT7": {
+          "rateCode": "4GY5B543C56QEZ6A.JRTCKXETXF.6YS6EN2CT7",
+          "description": "$0.0264 per On Demand Linux t3.small Instance Hour",
+          "beginRange": "0",
+          "endRange": "Inf",
+          "unit": "Hrs",
+          "pricePerUnit": {
+            "USD": "0.0264000000"
+          },
+          "appliesTo": []
+        }
+      },
+      "effectiveDate": "2026-11-01T00:00:00Z"
+    }
+  ],
+  "ebs_gp3": [
+    {
+      "sku": "SZZSUHFFV7Z5J74G",
+      "attributes": {
+        "servicecode": "AmazonEC2",
+        "location": "Asia Pacific (Jakarta)",
+        "locationType": "AWS Region",
+        "storageMedia": "SSD-backed",
+        "volumeType": "General Purpose",
+        "maxVolumeSize": "64 TiB",
+        "maxIopsvolume": "80000",
+        "maxThroughputvolume": "2000 MiB/s",
+        "usagetype": "APS4-EBS:VolumeUsage.gp3",
+        "operation": "",
+        "regionCode": "ap-southeast-3",
+        "servicename": "Amazon Elastic Compute Cloud",
+        "volumeApiName": "gp3"
+      },
+      "description": "$0.096 per GB-month of General Purpose (gp3) provisioned storage - Asia Pacific (Jakarta)",
+      "unit": "GB-Mo",
+      "price": {
+        "USD": "0.0960000000"
+      }
+    }
+  ],
+  "fx_reference": {
+    "date": "2026-11-06",
+    "eur_idr": 20208.93,
+    "eur_usd": 1.1165,
+    "usd_idr_cross": 18100.25078369906
+  }
+}

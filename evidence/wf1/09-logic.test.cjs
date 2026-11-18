@@ -1,6 +1,25 @@
 const fs=require('node:fs');const path=require('node:path');const assert=require('node:assert/strict');const {test}=require('node:test');
 const repo=path.resolve(__dirname,'../..');
-function run(file,name,input){const wf=JSON.parse(fs.readFileSync(path.join(repo,'workflows',file),'utf8'));const code=wf.nodes.find(n=>n.name===name).parameters.jsCode;const items=input.map(json=>({json}));return new Function('$input','$json','$',code)({first:()=>items[0],all:()=>items},input[0],()=>({first:()=>({json:{startedAt:1000}})}));}
+function run(file, name, input) {
+  const workflow = JSON.parse(fs.readFileSync(path.join(repo, 'workflows', file), 'utf8'));
+  const parameters = workflow.nodes.find(node => node.name === name).parameters;
+  assert.equal(parameters.language, 'pythonNative');
+  // Stock normalization receives the record envelope produced by the merchant loop.
+  const items = input.map(json => ({json: name === 'Normalisasi Stok' ? {record: json, startedAt: 1000} : json}));
+  const program = [
+    'import json, sys',
+    'payload = json.load(sys.stdin)',
+    'namespace = {}',
+    'exec("def execute(_items):\\n" + "\\n".join("    " + line for line in payload["code"].splitlines()), namespace)',
+    'print(json.dumps(namespace["execute"](payload["items"])))',
+  ].join('\n');
+  const result = require('node:child_process').spawnSync(process.env.PYTHON || 'python', ['-c', program], {
+    input: JSON.stringify({code: parameters.pythonCode, items}), encoding: 'utf8', timeout: 10000,
+  });
+  if (result.error) throw result.error;
+  if (result.status !== 0) throw new Error(result.stderr);
+  return JSON.parse(result.stdout);
+}
 const order={event:'order.created',order_id:'HM-TEST-NEW',merchant_id:'M001',customer_id:'C0100',total_amount:80000,items:[{sku:'sku-001',qty:1}]};
 for(const [label,change] of [['empty items',{items:[]}],['negative quantity',{items:[{sku:'SKU-001',qty:-1}]}],['fractional quantity',{items:[{sku:'SKU-001',qty:1.5}]}],['string amount',{total_amount:'80000'}],['invalid SKU',{items:[{sku:'bad',qty:1}]}]])test('Order rejects '+label,()=>{assert.equal(run('wf1-stock-sync-order-intake.json','Validasi Event Order',[{body:{...order,...change}}])[0].json.valid,false)});
 test('Order accepts lowercase SKU before lookup',()=>assert.equal(run('wf1-stock-sync-order-intake.json','Validasi Event Order',[{body:order}])[0].json.valid,true));
@@ -20,3 +39,18 @@ for (const [label,data,expected] of [
  ['foreign identity',{approved:true,responder:{id:'OTHER_USER'}},'invalid'],
  ['non-boolean decision',{approved:'true',responder:{id:'ISI_CHAT_ID_OPS'}},'invalid'],
 ]) test('Telegram approval rejects missing or foreign identity: '+label,()=>assert.equal(run('wf4-compensation-refund.json','Normalisasi Keputusan Telegram',[{data}])[0].json.body.keputusan,expected));
+
+test('WF3 safe refusal follows the webhook response contract', () => {
+  const workflow = JSON.parse(fs.readFileSync(path.join(repo, 'workflows', 'wf3-ai-merchant-assistant.json'), 'utf8'));
+  const response = workflow.nodes.find(node => node.name === 'Balas Penolakan').parameters;
+  const refusal = {jawaban: 'Saya hanya bisa membantu dengan data merchant yang terdaftar untuk akun kamu.', reason: 'Permintaan data merchant lain ditolak'};
+  const expression = response.responseBody;
+  assert.ok(expression.startsWith('={{') && expression.endsWith('}}'));
+  const body = new Function('$json', 'return (' + expression.slice(3, -2) + ');')(refusal);
+  assert.equal(response.options.responseCode, 200);
+  assert.equal(body.status, 'dijawab');
+  assert.equal(body.jawaban, refusal.jawaban);
+  assert.deepEqual(body.data_dipakai, []);
+  assert.equal(body.confidence, 0);
+  assert.equal(body.alasan, refusal.reason);
+});
